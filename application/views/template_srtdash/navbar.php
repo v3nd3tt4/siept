@@ -10,15 +10,15 @@
                         <span></span>
                         <span></span>
                     </div>
-                    <div class="search-box pull-left">
+                    <!-- <div class="search-box pull-left">
                         <form action="#">
                             <input type="text" name="search" placeholder="Search..." required>
                             <i class="ti-search"></i>
                         </form>
-                    </div>
+                    </div> -->
                 </div>
                 <!-- profile info & task notification -->
-                <div class="col-md-6 col-sm-4 clearfix">
+                <!-- <div class="col-md-6 col-sm-4 clearfix">
                     <ul class="notification-area pull-right">
                         <li id="full-view"><i class="ti-fullscreen"></i></li>
                         <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
@@ -163,7 +163,7 @@
                             <i class="ti-settings"></i>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- header area end -->
@@ -182,10 +182,10 @@
                 <div class="col-sm-6 clearfix">
                     <div class="user-profile pull-right">
                         <img class="avatar user-thumb" src="<?=base_url()?>assets_srtdash/images/author/avatar.png" alt="avatar">
-                        <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Kumkum Rai <i class="fa fa-angle-down"></i></h4>
+                        <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Vendetta <i class="fa fa-angle-down"></i></h4>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Message</a>
-                            <a class="dropdown-item" href="#">Settings</a>
+                            <!-- <a class="dropdown-item" href="#">Message</a>
+                            <a class="dropdown-item" href="#">Settings</a> -->
                             <a class="dropdown-item" href="#">Log Out</a>
                         </div>
                     </div>
