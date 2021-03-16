@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <p>
-                    <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button>
+                    <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
                     <a href="<?=base_url()?>surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a>
                     <br>
                     </p>
@@ -17,19 +17,29 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nomor Surat</th>
+                                <th>Nomor Perkara</th>
                                 <th>Perihal</th>
+                                <th>Kepada</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $no=1;foreach($surat->result() as $rsurat){ 
+                                $q = $this->db->get_where('db_sipp.pihak', array('id' => $rsurat->id_pihak_penerima));
+                                $pihak = $q->row()->nama;
+                            ?>
                             <tr>
-                                <td>1.</td>
-                                <td>W15.U8/359/SPT/HK.02/3/2021</td>
-                                <td>test</td>
+                                <td><?=$no++?>.</td>
+                                <td><?=$rsurat->nomor_surat_full?></td>
+                                <td><?=$rsurat->nomor_perkara?></td>
+                                <td><?=$rsurat->perihal?></td>
+                                <td><?=$pihak?></td>
                                 <td>
-                                    <button class="btn btn-warning">Detail</button>
+                                    <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
+                                    <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success "> <i class="fa fa-download"></i> Download</a>
                                 </td>
                             </tr>
+                            <?php }?>
                         </tbody>
                     </table>
                     <!-- <div class="d-sm-flex justify-content-between align-items-center">

@@ -224,6 +224,63 @@
             $('#dataTable').DataTable();
         });
     </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+        $('#nomor_perkara').select2({
+            minimumInputLength: 1,
+            allowClear: true,
+            placeholder: 'masukkan nomor perkara',
+            ajax: {
+                type: 'POST',
+                dataType: 'json',
+                url: '<?=base_url()?>surat_tugas/get_nomor_perkara',
+                delay: 100,
+                data: function(params) {
+                    return {
+                    search: params.term
+                    }
+                },
+                processResults: function (data, page) {
+                return {
+                    results: data
+                };
+                },
+            }
+        }).on('select2:select', function (evt) {
+         var data = $("#nomor_perkara option:selected").text();
+      });
+
+        $('#tujuan').attr('disabled', true);
+        $('#tujuan').attr('readonly', true);
+
+        $(document).on('change', '#nomor_perkara', function(e){
+            e.preventDefault();
+            var perkara_id = $(this).val();
+            $.ajax({
+                url: '<?=base_url()?>surat_tugas/get_pihak',
+                type : 'POST',
+                dataType: 'JSON',
+                data: {'perkara_id':perkara_id},
+                success: function(JSONObject){
+                    var hitung = "";
+                    hitung += '<option value="">---- pilih ----</option>';
+                    for (var key in JSONObject) {
+                        if (JSONObject.hasOwnProperty(key)) {                        
+                        hitung += "<option value="+JSONObject[key]["id_pihak"]+">";
+                        hitung += JSONObject[key]["nama_pihak"];
+                        hitung += "</option>";
+                        }
+                    }
+                    $("#tujuan").html(hitung);
+                    $('#tujuan').attr('disabled', false);
+                    $('#tujuan').attr('readonly', false);
+                }
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>
