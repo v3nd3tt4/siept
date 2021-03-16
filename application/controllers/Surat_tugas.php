@@ -26,7 +26,8 @@ class Surat_tugas extends CI_Controller {
 		$surat = $this->db->get();
 		$data = array(
 			'page' => 'dashboard_surat_tugas',
-			'surat' => $surat
+			'surat' => $surat,
+			'link' => 'surat_tugas'
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
@@ -37,7 +38,8 @@ class Surat_tugas extends CI_Controller {
 		$js = $this->db->get_where('db_sipp.jurusita', array('aktif' => 'Y'));
 		$data = array(
 			'page' => 'tambah_surat_tugas',
-			'js' => $js
+			'js' => $js,
+			'link' => 'surat_tugas'
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}

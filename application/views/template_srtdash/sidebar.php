@@ -4,21 +4,22 @@
             <div class="logo">
                 <!-- <a href="index.html"><img src="<?=base_url()?>assets_srtdash/images/icon/logo.png" alt="logo"></a> -->
                 <h3 style="color:#fff">SIE PT</h3>
+                <p style="color: #fff">Pengadilan Negeri Rantau</p>
             </div>
         </div>
         <div class="main-menu">
             <div class="menu-inner">
                 <nav>
                     <ul class="metismenu" id="menu">
-                        <!-- <li class="active">
-                            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Surat</span></a>
+                        <li <?php if(@$link=='dasar' || @$link=='perihal'){?> class="active" <?php }?>>
+                            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Master Data</span></a>
                             <ul class="collapse">
-                                <li class="active"><a href="index.html">ICO dashboard</a></li>
-                                <li><a href="index2.html">Ecommerce dashboard</a></li>
-                                <li><a href="index3.html">SEO dashboard</a></li>
+                                <li <?php if(@$link=='dasar'){?> class="active" <?php }?>><a href="<?=base_url()?>master/dasar">Dasar</a></li>
+                                <li <?php if(@$link=='perihal'){?> class="active" <?php }?>><a href="<?=base_url()?>master/perihal">Perihal</a></li>
                             </ul>
-                        </li> -->
-                        <li class="active"><a href="maps.html"><i class="ti-map-alt"></i> <span>Surat Tugas</span></a></li>
+                        </li>
+                        <li <?php if(@$link=='surat_tugas'){?> class="active" <?php }?>><a href="<?=base_url()?>surat_tugas"><i class="ti-map-alt"></i> <span>Surat Tugas</span></a></li>
+                        
                     </ul>
                 </nav>
             </div>
