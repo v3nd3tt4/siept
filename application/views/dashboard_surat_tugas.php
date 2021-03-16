@@ -20,6 +20,7 @@
                                 <th>Nomor Perkara</th>
                                 <th>Perihal</th>
                                 <th>Kepada</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -27,16 +28,42 @@
                             <?php $no=1;foreach($surat->result() as $rsurat){ 
                                 $q = $this->db->get_where('db_sipp.pihak', array('id' => $rsurat->id_pihak_penerima));
                                 $pihak = $q->row()->nama;
+                                
+                                if($rsurat->id_status == 1){
+                                    $label = 'secondary';
+                                }else if($rsurat->id_status == 2){
+                                    $label = 'warning';
+                                }else if($rsurat->id_status == 3){
+                                    $label = 'danger';
+                                }else if($rsurat->id_status == 4){
+                                    $label = 'success';
+                                }
                             ?>
                             <tr>
                                 <td><?=$no++?>.</td>
                                 <td><?=$rsurat->nomor_surat_full?></td>
                                 <td><?=$rsurat->nomor_perkara?></td>
-                                <td><?=$rsurat->perihal?></td>
+                                <td><?=$rsurat->text?></td>
                                 <td><?=$pihak?></td>
                                 <td>
+                                    <span class="badge badge-<?=$label?>">
+                                    <?=$rsurat->nama_status?>
+                                    </span>
+                                </td>
+                                <td>
                                     <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
-                                    <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success "> <i class="fa fa-download"></i> Download</a>
+                                    <?php
+                                    if($rsurat->id_status == 1){ ?>
+                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
+                                    <?php }else if($rsurat->id_status == 2){
+                                        
+                                    }else if($rsurat->id_status == 3){
+                                        $label = 'danger';
+                                    }else if($rsurat->id_status == 4){ ?>
+                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Teruskan Ke Panitera</a>
+                                    <?php }
+                                    ?>
+                                    
                                 </td>
                             </tr>
                             <?php }?>

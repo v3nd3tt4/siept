@@ -38,13 +38,24 @@
                         <input type="text" class="form-control" name="nomor_surat">
                     </div> -->
                     <div class="form-group">
-                        <label for="">Perihal:</label>
-                        <textarea class="form-control" name="perihal" required></textarea>
+                        <label for="">Dasar:</label>
+                        <select name="dasar" id="dasar" class="form-control select2" style="min-height:50px"  required>
+                            <option value="">--pilih--</option>
+                            <?php foreach($dasar->result() as $rdasar){?>
+                            <option value="<?=$rdasar->id_dasar?>"><?=$rdasar->text?></option>
+                            <?php }?>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Dasar:</label>
-                        <textarea class="form-control" name="dasar" required></textarea>
+                        <label for="">Perihal:</label>
+                        <select name="perihal" id="perihal" class="form-control select2" style="min-height:50px" required>
+                            <option value="">--pilih--</option>
+                            <?php foreach($perihal->result() as $rperihal){?>
+                            <option value="<?=$rperihal->id_perihal?>"><?=$rperihal->text?></option>
+                            <?php }?>
+                        </select>
                     </div>
+                    
                     <button type="submit" class="btn btn-success pull-right"><i class="fa fa-refresh"></i> Proses</button>
                     </form>
                 </div>

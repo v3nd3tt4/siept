@@ -7,35 +7,18 @@
             <div class="card">
                 <div class="card-body">
                     <p>
-                    <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <a href="<?=base_url()?>master/dasar/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Tambah Master Data Dasar</a>
+                    <button class="btn btn-default" onclick="window.history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
                     <br>
                     </p>
                     <br><br>
-                    <table id="dataTable" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Text</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $no=1;foreach($dasar->result() as $rdasar){ 
-                                
-                            ?>
-                            <tr>
-                                <td><?=$no++?>.</td>
-                                <td><?=$rdasar->text?></td>
-                                <td>
-                                    <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
-                                    <a href="<?=base_url()?>master/dasar/edit/<?=$rdasar->id_dasar?>" class="btn btn-success btn-sm"> <i class="fa fa-pencil"></i> Edit</a>
-                                    <a href="<?=base_url()?>master/dasar/hapus/<?=$rdasar->id_dasar?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');"> <i class="fa fa-remove"></i> Hapus</a>
-                                </td>
-                            </tr>
-                            <?php }?>
-                        </tbody>
-                    </table>
+                    <form action="<?=base_url()?>master/perihal/update" method="POST">
+                        <div class="form-group">
+                            <label for="">Text:</label>
+                            <input type="hidden" class="form-control" name="id_perihal" id="id_perihal" value="<?=$perihal->row()->id_perihal?>">
+                            <textarea name="text" id="text" class="form-control"><?=$perihal->row()->text?></textarea>
+                        </div>
+                        <button class="btn btn-success pull-right" > <i class="fa fa-save"></i> Update</button>
+                    </form>
                     <!-- <div class="d-sm-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Market Value And Trends</h4>
                         <select class="custome-select border-0 pr-3">

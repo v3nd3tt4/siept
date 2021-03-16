@@ -22,6 +22,8 @@ class Surat_tugas extends CI_Controller {
 	{
 		// var_dump("expression");exit();
 		$this->db->from('db_siept.tb_surat');
+		$this->db->join('db_siept.tb_perihal', 'tb_perihal.id_perihal = tb_surat.id_perihal');
+		$this->db->join('db_siept.tb_status', 'tb_status.id_status = tb_surat.id_status');
 		$this->db->order_by('id_surat', 'DESC');
 		$surat = $this->db->get();
 		$data = array(
@@ -36,9 +38,15 @@ class Surat_tugas extends CI_Controller {
 	{
 		// var_dump("expression");exit();
 		$js = $this->db->get_where('db_sipp.jurusita', array('aktif' => 'Y'));
+
+		$dasar = $this->db->get('db_siept.tb_dasar');
+		$perihal = $this->db->get('db_siept.tb_perihal');
+
 		$data = array(
 			'page' => 'tambah_surat_tugas',
 			'js' => $js,
+			'dasar' => $dasar,
+			'perihal' => $perihal,
 			'link' => 'surat_tugas'
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
@@ -104,6 +112,9 @@ class Surat_tugas extends CI_Controller {
 		$perihal = $this->input->post('perihal', true);
 		$dasar = $this->input->post('dasar', true);
 
+		$id_dasar = $dasar;
+		$id_perihal = $perihal;
+
 		$cek = $this->db->get('db_siept.tb_surat');
 		if($cek->num_rows() == 0){
 			$nomor_urutan = 1;
@@ -148,16 +159,18 @@ class Surat_tugas extends CI_Controller {
 			'id_perkara' => $id_perkara,
 			'nomor_perkara' => $nomor_perkara,
 			'id_jurusita' => $id_jurusita,
-			'perihal' => $perihal,
+			// 'perihal' => $perihal,
 			'urutan_nomor_surat' => $nomor_urutan,
 			'bulan_nomor_surat' => $bulan,
 			'tahun_nomor_surat' => $tahun,
 			'tanggal_surat' => $tanggal_surat,
 			'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
-			'dasar' => $dasar,
+			// 'dasar' => $dasar,
 			'pembuat' => empty($this->session->userdata('user')) ? 'vendetta' : $this->session->userdata('user'),
-			'qrcode' => $image_name
+			'qrcode' => $image_name,
+			'id_dasar' => $id_dasar,
+			'id_perihal' => $id_perihal
 		);
 		
 
@@ -184,9 +197,13 @@ class Surat_tugas extends CI_Controller {
 
 		$nomor_surat = $qu->nomor_surat_full;
 		$nomor_perkara = $qu->nomor_perkara;
-		$perihal = $qu->perihal;
+
+		$dasar = $this->db->get_where('db_siept.tb_dasar', array('id_dasar' => $qu->id_dasar));
+		$perihal = $this->db->get_where('db_siept.tb_perihal', array('id_perihal' => $qu->id_perihal));
+
+		$perihal = $perihal->row()->text;
 		$tanggal_surat = tgl_indo($qu->tanggal_surat);
-		$dasar = $qu->dasar;
+		$dasar = $dasar->row()->text;
 
 		$qtujuan = $this->db->get_where('db_sipp.pihak', array('id' => $qu->id_pihak_penerima));
         $pihak = $qtujuan->row()->nama;

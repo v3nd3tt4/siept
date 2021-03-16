@@ -8,7 +8,7 @@
                 <div class="card-body">
                     <p>
                     <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <a href="<?=base_url()?>master/dasar/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Tambah Master Data Dasar</a>
+                    <a href="<?=base_url()?>master/perihal/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Tambah Master Data perihal</a>
                     <br>
                     </p>
                     <br><br>
@@ -21,16 +21,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $no=1;foreach($dasar->result() as $rdasar){ 
+                            <?php $no=1;foreach($perihal->result() as $rperihal){ 
                                 
                             ?>
                             <tr>
                                 <td><?=$no++?>.</td>
-                                <td><?=$rdasar->text?></td>
+                                <td><?=$rperihal->text?></td>
                                 <td>
                                     <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
-                                    <a href="<?=base_url()?>master/dasar/edit/<?=$rdasar->id_dasar?>" class="btn btn-success btn-sm"> <i class="fa fa-pencil"></i> Edit</a>
-                                    <a href="<?=base_url()?>master/dasar/hapus/<?=$rdasar->id_dasar?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');"> <i class="fa fa-remove"></i> Hapus</a>
+                                    <a href="<?=base_url()?>master/perihal/edit/<?=$rperihal->id_perihal?>" class="btn btn-success btn-sm"> <i class="fa fa-pencil"></i> Edit</a>
+                                    <a href="<?=base_url()?>master/perihal/hapus/<?=$rperihal->id_perihal?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');"> <i class="fa fa-remove"></i> Hapus</a>
                                 </td>
                             </tr>
                             <?php }?>
