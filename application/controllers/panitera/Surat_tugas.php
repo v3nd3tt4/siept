@@ -232,7 +232,11 @@ class Surat_tugas extends CI_Controller {
 		include './application/libraries/Image.php';
 		$functions = new Image($ttdel);
 
-		$hex = $functions->getContent();
+		if($qu->id_status == '4'){
+			$hex = $functions->getContent();
+		}else{
+			$hex = '';
+		}
 
 		$document = file_get_contents("./assets_srtdash/SPT_temp.rtf");
 
@@ -317,4 +321,27 @@ class Surat_tugas extends CI_Controller {
 		header("Content-length: " . strlen($document));
 		echo $document;
 	}
+
+	public function setujui($id_surat){
+		$update = $this->db->update('db_siept.tb_surat', array('id_status' => 4), array('id_surat' => $id_surat));
+		if($update){
+			echo '<script>alert("Berhasil disimpan");</script>';
+			echo '<script>window.history.back();</script>';
+		}else{
+			echo '<script>alert("Gagal disimpan");</script>';
+            echo '<script>window.history.back();</script>';
+		}
+	}
+
+	public function tolak($id_surat){
+		$update = $this->db->update('db_siept.tb_surat', array('id_status' => 3), array('id_surat' => $id_surat));
+		if($update){
+			echo '<script>alert("Berhasil disimpan");</script>';
+			echo '<script>window.history.back();</script>';
+		}else{
+			echo '<script>alert("Gagal disimpan");</script>';
+            echo '<script>window.history.back();</script>';
+		}
+	}
+
 }

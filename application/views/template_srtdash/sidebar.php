@@ -21,7 +21,12 @@
                         </li>
                         <?php }?>
                         
-                        <li <?php if(@$link=='surat_tugas'){?> class="active" <?php }?>><a href="<?=base_url()?>surat_tugas"><i class="ti-map-alt"></i> <span>Surat Tugas</span></a></li>
+                        <?php $arr = array('admin', 'perdata');if(in_array($this->session->userdata('level', true),$arr) ){
+                            $l = 'surat_tugas';
+                        }else{
+                            $l = 'panitera/surat_tugas';
+                        }?>
+                        <li <?php if(@$link=='surat_tugas'){?> class="active" <?php }?>><a href="<?=base_url()?><?=$l?>"><i class="ti-map-alt"></i> <span>Surat Tugas</span></a></li>
 
                         <?php if($this->session->userdata('level') == 'admin'){?>
                         <li <?php if(@$link=='user'){?> class="active" <?php }?>><a href="<?=base_url()?>user"><i class="ti-user"></i> <span>User</span></a></li>

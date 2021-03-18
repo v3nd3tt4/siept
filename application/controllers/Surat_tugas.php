@@ -34,6 +34,9 @@ class Surat_tugas extends CI_Controller {
 		$this->db->from('db_siept.tb_surat');
 		$this->db->join('db_siept.tb_perihal', 'tb_perihal.id_perihal = tb_surat.id_perihal');
 		$this->db->join('db_siept.tb_status', 'tb_status.id_status = tb_surat.id_status');
+		if($this->input->post('id_status',true)){
+			$this->db->where(array('db_siept.tb_surat.id_status' => $this->input->post('id_status',true)));
+		}
 		$this->db->order_by('id_surat', 'DESC');
 		$surat = $this->db->get();
 		$data = array(
@@ -231,8 +234,12 @@ class Surat_tugas extends CI_Controller {
 		
 		include './application/libraries/Image.php';
 		$functions = new Image($ttdel);
-
-		$hex = $functions->getContent();
+		if($qu->id_status == '4'){
+			$hex = $functions->getContent();
+		}else{
+			$hex = '';
+		}
+		
 
 		$document = file_get_contents("./assets_srtdash/SPT_temp.rtf");
 
@@ -316,5 +323,16 @@ class Surat_tugas extends CI_Controller {
 		header("Content-disposition: inline; filename=spt.rtf");
 		header("Content-length: " . strlen($document));
 		echo $document;
+	}
+
+	public function teruskan($id_surat){
+		$update = $this->db->update('db_siept.tb_surat', array('id_status' => 2), array('id_surat' => $id_surat));
+		if($update){
+			echo '<script>alert("Berhasil disimpan");</script>';
+			echo '<script>window.history.back();</script>';
+		}else{
+			echo '<script>alert("Gagal disimpan");</script>';
+            echo '<script>window.history.back();</script>';
+		}
 	}
 }

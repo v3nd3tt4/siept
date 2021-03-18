@@ -10,11 +10,13 @@ class Login extends CI_Controller
     }
 
     public function index(){
-        if($this->session->userdata('level') == 'panitera'){
-            echo '<script>window.location.href = "'.base_url().'panitera/surat_tugas";</script>';
-        }else{
-            echo '<script>window.location.href = "'.base_url().'";</script>';
-        }       
+        // if($this->session->userdata('level') == 'panitera'){
+        //     echo '<script>window.location.href = "'.base_url().'panitera/surat_tugas";</script>';
+        //     exit();
+        // }else{
+        //     echo '<script>window.location.href = "'.base_url().'";</script>';
+        //     exit();
+        // }       
         
         $this->load->view('login');
     }
@@ -36,7 +38,7 @@ class Login extends CI_Controller
             if($cek->row()->level == 'panitera'){
                 echo '<script>window.location.href = "'.base_url().'panitera/surat_tugas";</script>';
             }else{
-                echo '<script>window.location.href = "'.base_url().'";</script>';
+                echo '<script>window.location.href = "'.base_url().'surat_tugas";</script>';
             }            
         }else{
             echo '<script>alert("User tidak ditemukan");</script>';
