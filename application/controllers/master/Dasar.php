@@ -18,6 +18,15 @@ class Dasar extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public function __construct()
+    {
+        parent::__construct();
+        if($this->session->userdata('level', true) != 'admin'){
+			echo '<script>alert("Maaf, anda tidak memiliki akses ke halaman ini");</script>';
+            echo '<script>window.location.href = "'.base_url().'";</script>';
+			exit();
+        }
+    }
 	public function index()
 	{
 		// var_dump("expression");exit();

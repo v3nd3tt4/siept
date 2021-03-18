@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Perihal extends CI_Controller {
+class User extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -18,7 +18,7 @@ class Perihal extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
         if($this->session->userdata('level', true) != 'admin'){
@@ -28,50 +28,54 @@ class Perihal extends CI_Controller {
         }
     }
 	public function index()
-	{
-		// var_dump("expression");exit();
-		$this->db->from('db_siept.tb_perihal');
-		$this->db->order_by('id_perihal', 'DESC');
-		$perihal = $this->db->get();
+	{ 
+        $this->db->from('db_siept.tb_user');
+        $this->db->order_by('id_user', 'DESC');
+        $user = $this->db->get();
 		$data = array(
-			'page' => 'master_data/perihal/index',
-			'link' => 'perihal',
-			'perihal' => $perihal
+			'page' => 'user/index',
+			'link' => 'user',
+            'user' => $user
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
 
-	public function tambah(){
+    public function tambah(){
 		$data = array(
-			'page' => 'master_data/perihal/tambah',
-			'link' => 'perihal',
+			'page' => 'user/tambah',
+			'link' => 'user',
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
 
-	public function edit($id_perihal){
-		$this->db->from('db_siept.tb_perihal');
-		$this->db->where(array('id_perihal' => $id_perihal));
-		$perihal = $this->db->get();
+	public function edit($id_user){
+		$this->db->from('db_siept.tb_user');
+		$this->db->where(array('id_user' => $id_user));
+		$user = $this->db->get();
 		$data = array(
-			'page' => 'master_data/perihal/edit',
-			'link' => 'perihal',
-			'perihal' => $perihal
+			'page' => 'user/edit',
+			'link' => 'user',
+			'user' => $user
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
 
 	public function simpan(){
-		$text = $this->input->post('text', true);
+		$username = $this->input->post('username', true);
+        $password = $this->input->post('password', true);
+        $nama_user = $this->input->post('nama_user', true);
+        $level = $this->input->post('level', true);
 		$data = array(
-			'text' => $text,
-			'tanggal_buat' => date('Y-m-d H:i:s')
+			'username' => $username,
+            'password' => $password,
+            'nama_user' => $nama_user,
+            'level' => $level
 		);
-		$simpan = $this->db->insert('db_siept.tb_perihal', $data);
+		$simpan = $this->db->insert('db_siept.tb_user', $data);
 		if($simpan){
 			echo '<script>alert("Berhasil disimpan");</script>';
             // echo '<script>window.location.href = "'.base_url().'surat_tugas/cetak/'.$id_surat.'";</script>';
-			echo '<script>window.location.href = "'.base_url().'master/perihal";</script>';
+			echo '<script>window.location.href = "'.base_url().'user";</script>';
 		}else{
 			echo '<script>alert("Gagal disimpan");</script>';
             echo '<script>window.history.back();</script>';
@@ -79,30 +83,35 @@ class Perihal extends CI_Controller {
 	}
 
 	public function update(){
-		$text = $this->input->post('text', true);
-		$id_perihal = $this->input->post('id_perihal', true);
+		$username = $this->input->post('username', true);
+        $password = $this->input->post('password', true);
+        $nama_user = $this->input->post('nama_user', true);
+        $id_user = $this->input->post('id_user', true);
+        $level = $this->input->post('level', true);
 		$data = array(
-			'text' => $text,
-			'tanggal_buat' => date('Y-m-d H:i:s')
+			'username' => $username,
+            'password' => $password,
+            'nama_user' => $nama_user,
+            'level' => $level
 		);
-		$simpan = $this->db->update('db_siept.tb_perihal', $data, array('id_perihal' => $id_perihal));
+		$simpan = $this->db->update('db_siept.tb_user', $data, array('id_user' => $id_user));
 		if($simpan){
 			echo '<script>alert("Berhasil diupdate");</script>';
             // echo '<script>window.location.href = "'.base_url().'surat_tugas/cetak/'.$id_surat.'";</script>';
-			echo '<script>window.location.href = "'.base_url().'master/perihal";</script>';
+			echo '<script>window.location.href = "'.base_url().'user";</script>';
 		}else{
 			echo '<script>alert("Gagal diupdate");</script>';
             echo '<script>window.history.back();</script>';
 		}
 	}
 
-	public function hapus($id_perihal){
+	public function hapus($id_user){
 		
-		$simpan = $this->db->delete('db_siept.tb_perihal', array('id_perihal' => $id_perihal));
+		$simpan = $this->db->delete('db_siept.tb_user', array('id_user' => $id_user));
 		if($simpan){
 			echo '<script>alert("Berhasil dihapus");</script>';
             // echo '<script>window.location.href = "'.base_url().'surat_tugas/cetak/'.$id_surat.'";</script>';
-			echo '<script>window.location.href = "'.base_url().'master/perihal";</script>';
+			echo '<script>window.location.href = "'.base_url().'user";</script>';
 		}else{
 			echo '<script>alert("Gagal dihapus");</script>';
             echo '<script>window.history.back();</script>';

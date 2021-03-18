@@ -21,8 +21,7 @@ class Surat_tugas extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		$arr = array('admin', 'perdata');
-        if(!in_array($this->session->userdata('level', true),$arr) ){
+        if($this->session->userdata('level', true) != 'panitera'){
 			echo '<script>alert("Maaf, anda tidak memiliki akses ke halaman ini");</script>';
             echo '<script>window.location.href = "'.base_url().'";</script>';
 			exit();
@@ -34,10 +33,11 @@ class Surat_tugas extends CI_Controller {
 		$this->db->from('db_siept.tb_surat');
 		$this->db->join('db_siept.tb_perihal', 'tb_perihal.id_perihal = tb_surat.id_perihal');
 		$this->db->join('db_siept.tb_status', 'tb_status.id_status = tb_surat.id_status');
+		$this->db->where(array('db_siept.tb_surat.id_status >=' => 2));
 		$this->db->order_by('id_surat', 'DESC');
 		$surat = $this->db->get();
 		$data = array(
-			'page' => 'dashboard_surat_tugas',
+			'page' => 'panitera/surat_tugas/index',
 			'surat' => $surat,
 			'link' => 'surat_tugas'
 		);

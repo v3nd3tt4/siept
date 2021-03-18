@@ -7,68 +7,34 @@
             <div class="card">
                 <div class="card-body">
                     <p>
-                    <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <a href="<?=base_url()?>surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a>
+                    <button class="btn btn-default" onclick="window.history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
                     <br>
                     </p>
                     <br><br>
-                    <table id="dataTable" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nomor Surat</th>
-                                <th>Nomor Perkara</th>
-                                <th>Perihal</th>
-                                <th>Kepada</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $no=1;foreach($surat->result() as $rsurat){ 
-                                $q = $this->db->get_where('db_sipp.pihak', array('id' => $rsurat->id_pihak_penerima));
-                                $pihak = $q->row()->nama;
-                                
-                                if($rsurat->id_status == 1){
-                                    $label = 'secondary';
-                                }else if($rsurat->id_status == 2){
-                                    $label = 'warning';
-                                }else if($rsurat->id_status == 3){
-                                    $label = 'danger';
-                                }else if($rsurat->id_status == 4){
-                                    $label = 'success';
-                                }
-                            ?>
-                            <tr>
-                                <td><?=$no++?>.</td>
-                                <td><?=$rsurat->nomor_surat_full?></td>
-                                <td><?=$rsurat->nomor_perkara?></td>
-                                <td><?=$rsurat->text?></td>
-                                <td><?=$pihak?></td>
-                                <td>
-                                    <span class="badge badge-<?=$label?>">
-                                    <?=$rsurat->nama_status?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
-                                    <?php
-                                    if($rsurat->id_status == 1){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
-                                    <?php }else if($rsurat->id_status == 2){
-                                        
-                                    }else if($rsurat->id_status == 3){
-                                        $label = 'danger';
-                                    }else if($rsurat->id_status == 4){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>
-                                    <?php }
-                                    ?>
-                                    
-                                </td>
-                            </tr>
-                            <?php }?>
-                        </tbody>
-                    </table>
+                    <form action="<?=base_url()?>user/simpan" method="POST">
+                        <div class="form-group">
+                            <label for="">Username:</label>
+                            <input type="text" class="form-control" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Password:</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Nama:</label>
+                            <input type="text" class="form-control" name="nama_user">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Level:</label>
+                            <select name="level" id="level" class="form-control">
+                                <option value="">--pilih--</option>
+                                <option value="panitera">panitera</option>
+                                <option value="perdata">perdata</option>
+                                <option value="admin">admin</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success pull-right" > <i class="fa fa-save"></i> Simpan</button>
+                    </form>
                     <!-- <div class="d-sm-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Market Value And Trends</h4>
                         <select class="custome-select border-0 pr-3">
