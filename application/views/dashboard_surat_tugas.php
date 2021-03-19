@@ -17,7 +17,10 @@
                             <label for="">Filter Status SPT:</label>
                             <select class="form-control" name="id_status" id="id_status">
                                 <option value="">--pilih--</option>
-                                <?php $qstat=$this->db->get('db_siept.tb_status');
+                                <?php
+                                $this->db->from('db_siept.tb_status');
+                                $this->db->where_not_in('id_status', array(3));
+                                $qstat=$this->db->get();
                                     foreach($qstat->result() as $rstat){ ?>
                                 <option value="<?=$rstat->id_status?>" <?=$rstat->id_status == $this->input->post('id_status',true) ? 'selected' : '' ?>><?=$rstat->nama_status?></option>
                                 <?php

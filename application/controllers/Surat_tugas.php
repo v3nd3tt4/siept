@@ -142,7 +142,8 @@ class Surat_tugas extends CI_Controller {
 
 		$cek = $this->db->get('db_siept.tb_surat');
 		if($cek->num_rows() == 0){
-			$nomor_urutan = 1;
+			$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
+			$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
 		}else{
 			$this->db->from('db_siept.tb_surat');
 			$this->db->order_by('urutan_nomor_surat', 'DESC');
@@ -411,7 +412,7 @@ class Surat_tugas extends CI_Controller {
 		$document = str_replace("%%tglregister%%", $tglregister, $document);
 
 		header("Content-type: application/msword");
-		header("Content-disposition: inline; filename=spt.rtf");
+		header("Content-disposition: inline; filename=".$nomor_surat.".rtf");
 		header("Content-length: " . strlen($document));
 		echo $document;
 	}

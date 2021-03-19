@@ -317,7 +317,7 @@ class Surat_tugas extends CI_Controller {
 		$document = str_replace("%%pemdll%%", $pihak4, $document);
 
 		header("Content-type: application/msword");
-		header("Content-disposition: inline; filename=spt.rtf");
+		header("Content-disposition: inline; filename=".$nomor_surat.".rtf");
 		header("Content-length: " . strlen($document));
 		echo $document;
 	}
@@ -511,7 +511,7 @@ class Surat_tugas extends CI_Controller {
 		$document = str_replace("%%tglregister%%", $tglregister, $document);
 
 		header("Content-type: application/msword");
-		header("Content-disposition: inline; filename=spt.rtf");
+		header("Content-disposition: inline; filename=".$nomor_surat.".rtf");
 		header("Content-length: " . strlen($document));
 		echo $document;
 	}
