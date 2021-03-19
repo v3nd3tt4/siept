@@ -12,11 +12,13 @@
                 <nav>
                     <ul class="metismenu" id="menu">
                         <?php if($this->session->userdata('level') == 'admin'){?>
-                        <li <?php if(@$link=='dasar' || @$link=='perihal'){?> class="active" <?php }?>>
+                        <li <?php if(@$link=='dasar' || @$link=='perihal' || @$link=='guna' || @$link=='acara'){?> class="active" <?php }?>>
                             <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Master Data</span></a>
                             <ul class="collapse">
                                 <li <?php if(@$link=='dasar'){?> class="active" <?php }?>><a href="<?=base_url()?>master/dasar">Dasar</a></li>
                                 <li <?php if(@$link=='perihal'){?> class="active" <?php }?>><a href="<?=base_url()?>master/perihal">Perihal</a></li>
+                                <li <?php if(@$link=='guna'){?> class="active" <?php }?>><a href="<?=base_url()?>master/guna">Guna</a></li>
+                                <li <?php if(@$link=='acara'){?> class="active" <?php }?>><a href="<?=base_url()?>master/acara">Acara</a></li>
                             </ul>
                         </li>
                         <?php }?>

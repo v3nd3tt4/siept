@@ -6,85 +6,31 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    
                     <p>
                     <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <a href="<?=base_url()?>surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a>
+                    <a href="<?=base_url()?>master/acara/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Tambah Master Data acara</a>
                     <br>
                     </p>
-                    <form action="" method="POST">
-                        <div class="form-group">
-                            <label for="">Filter Status SPT:</label>
-                            <select class="form-control" name="id_status" id="id_status">
-                                <option value="">--pilih--</option>
-                                <?php $qstat=$this->db->get('db_siept.tb_status');
-                                    foreach($qstat->result() as $rstat){ ?>
-                                <option value="<?=$rstat->id_status?>" <?=$rstat->id_status == $this->input->post('id_status',true) ? 'selected' : '' ?>><?=$rstat->nama_status?></option>
-                                <?php
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-default">Filter</button>
-                        <?php if($this->input->post('id_status',true)){?>
-                        <a href="<?=base_url()?>surat_tugas" class="btn btn-warning">Reset Filter</a>
-                        <?php }?>
-                    </form>
                     <br><br>
                     <table id="dataTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nomor Surat</th>
-                                <th>Nomor Perkara</th>
-                                <th>Perihal</th>
-                                <th>Kepada</th>
-                                <th>Status</th>
+                                <th>Text</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $no=1;foreach($surat->result() as $rsurat){ 
-                                $q = $this->db->get_where('db_sipp.pihak', array('id' => $rsurat->id_pihak_penerima));
-                                $pihak = $q->row()->nama;
+                            <?php $no=1;foreach($acara->result() as $racara){ 
                                 
-                                if($rsurat->id_status == 1){
-                                    $label = 'secondary';
-                                }else if($rsurat->id_status == 2){
-                                    $label = 'warning';
-                                }else if($rsurat->id_status == 3){
-                                    $label = 'danger';
-                                }else if($rsurat->id_status == 4){
-                                    $label = 'success';
-                                }
                             ?>
                             <tr>
                                 <td><?=$no++?>.</td>
-                                <td><?=$rsurat->nomor_surat_full?></td>
-                                <td><?=$rsurat->nomor_perkara?></td>
-                                <td><?=$rsurat->text?></td>
-                                <td><?=$pihak?></td>
-                                <td>
-                                    <span class="badge badge-<?=$label?>">
-                                    <?=$rsurat->nama_status?>
-                                    </span>
-                                </td>
+                                <td><?=$racara->text?></td>
                                 <td>
                                     <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
-                                    <?php
-                                    if($rsurat->id_status == 1){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/teruskan/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs" onclick="return confirm('Apakah anda yakin meneruskan SPT ini ke Panitera?');"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> Lihat SPT</a>
-                                    <?php }else if($rsurat->id_status == 2){
-                                        
-                                    }else if($rsurat->id_status == 3){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/teruskan/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs" onclick="return confirm('Apakah anda yakin meneruskan SPT ini ke Panitera?');"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> Lihat SPT</a>
-                                    <?php }else if($rsurat->id_status == 4){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>
-                                    <?php }
-                                    ?>
-                                    
+                                    <a href="<?=base_url()?>master/acara/edit/<?=$racara->id_acara?>" class="btn btn-success btn-sm"> <i class="fa fa-pencil"></i> Edit</a>
+                                    <a href="<?=base_url()?>master/acara/hapus/<?=$racara->id_acara?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus data ini?');"> <i class="fa fa-remove"></i> Hapus</a>
                                 </td>
                             </tr>
                             <?php }?>

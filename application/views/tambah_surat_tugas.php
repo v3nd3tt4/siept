@@ -33,6 +33,15 @@
                         <label for="">Tanggal Surat:</label>
                         <input type="date" name="tanggal_surat" id="tanggal_surat" class="form-control" required>
                     </div>
+                    <div class="form-group">
+                        <label for="">Tanggal:</label>
+                        <input type="date" name="tanggal" id="tanggal" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Pukul:</label>
+                        <input type="text" name="pukul" id="pukul" class="form-control" required>
+                    </div>
+                    
                     <!-- <div class="form-group">
                         <label for="">Nomor Surat:</label>
                         <input type="text" class="form-control" name="nomor_surat">
@@ -52,6 +61,24 @@
                             <option value="">--pilih--</option>
                             <?php foreach($perihal->result() as $rperihal){?>
                             <option value="<?=$rperihal->id_perihal?>"><?=$rperihal->text?></option>
+                            <?php }?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Guna:</label>
+                        <select name="guna" id="guna" class="form-control select2" style="min-height:50px" required>
+                            <option value="">--pilih--</option>
+                            <?php foreach($guna->result() as $rguna){?>
+                            <option value="<?=$rguna->id_guna?>"><?=$rguna->text?></option>
+                            <?php }?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Acara:</label>
+                        <select name="acara" id="acara" class="form-control select2" style="min-height:50px" required>
+                            <option value="">--pilih--</option>
+                            <?php foreach($acara->result() as $racara){?>
+                            <option value="<?=$racara->id_acara?>"><?=$racara->text?></option>
                             <?php }?>
                         </select>
                     </div>

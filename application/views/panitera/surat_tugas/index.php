@@ -54,8 +54,8 @@
                                         $arr = array(2);
                                         if(in_array($rsurat->id_status, $arr) ){
                                     ?>
-                                        <a href="<?=base_url()?>panitera/surat_tugas/setujui/<?=$rsurat->id_surat?>" class="btn btn-success btn-xs" onclick="return confirm('Apakah anda yakin akan menyetujui SPT ini?');"> <i class="fa fa-check"></i> Setujui</a>
-                                        <a href="<?=base_url()?>panitera/surat_tugas/tolak/<?=$rsurat->id_surat?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin tidak menyetujui SPT ini?');"> <i class="fa fa-remove"></i> Tidak disetujui</a>
+                                        <a href="<?=base_url()?>panitera/surat_tugas/setujui/<?=$rsurat->id_surat?>" class="btn btn-success btn-xs" onclick="return confirm('Apakah anda yakin akan menyetujui SPT ini?');"> <i class="fa fa-check"></i> ttd elektronik</a>
+                                        <!-- <a href="<?=base_url()?>panitera/surat_tugas/tolak/<?=$rsurat->id_surat?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin tidak menyetujui SPT ini?');"> <i class="fa fa-remove"></i> Tidak disetujui</a> -->
                                     <?php
 
                                         }
