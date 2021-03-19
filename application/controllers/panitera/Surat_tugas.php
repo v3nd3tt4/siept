@@ -350,11 +350,72 @@ class Surat_tugas extends CI_Controller {
 		$hari_ini = hari_ini(date('D', strtotime($qu->hari)));
 		$hari = $hari_ini.', '.tgl_indo($qu->hari);
 		$pukul = $qu->pukul;
+		
+		$pecah = explode('/', $nomor_perkara);
+		$kode = $pecah[1];
+
+		//query get jenis perkara
+		$qkode = $this->db->get_where('db_sipp.alur_perkara', array('kode' => $kode));
+		$jnspkr = $qkode->row()->nama;
+
+		//cek1
+		$sbg = '';
+		$qp1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
+		$cek_gugatan = stripos('Gugatan', $jnspkr);
+
+
+		// $arrp = array('Pdt.P');
+		
+		$cek_perm = $this->db->get_where('db_siept.tb_kode_permohonan', array('kode_perkara' => $jnspkr));
+		
+		if($qp1->num_rows() > 0){
+			if($cek_perm->num_rows() != 0){
+				$sbb = 'Pemohon';
+			}else{
+				$sbb = 'Penggugat';
+			}
+			$qpm1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
+			if($qpm1->num_rows() > 1){
+				$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp1->row()->urutan).'}';
+			}else{
+				$sbg = ' {\b '.$sbb.'}';
+			}			
+		}else{
+			$qp2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
+			if($qp2->num_rows() > 0){
+				if($cek_perm->num_rows() != 0){
+					$sbb = 'Termohon';
+				}else{
+					$sbb = 'Tergugat';
+				}
+				$qpm2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
+				if($qpm2->num_rows() > 1){
+					$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp2->row()->urutan).'}';
+				}else{
+					$sbg = ' {\b '.$sbb.'}';
+				}	
+			}else{
+				$qp4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
+				if($qp4->num_rows() > 0){
+					if($cek_perm->num_rows() != 0){
+						$sbb = 'Turut Termohon';
+					}else{
+						$sbb = 'Turut Tergugat';
+					}
+					$qpm4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
+					if($qpm4->num_rows() > 1){
+						$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp4->row()->urutan).'}';
+					}else{
+						$sbg = ' {\b '.$sbb.'}';
+					}
+				}
+			}
+		}
 
 		$qtujuan = $this->db->get_where('db_sipp.pihak', array('id' => $qu->id_pihak_penerima));
         $pihak = $qtujuan->row()->nama;
 		$nmtujuan = $pihak;
-		$almtujuan = $qtujuan->row()->alamat;
+		$almtujuan = $qtujuan->row()->alamat.', dalam hal ini disebut sebagai '.$sbg.';';
 
 		$js = $this->db->get_where('db_sipp.jurusita', array('aktif' => 'Y', 'id' => $qu->id_jurusita));
 		$nmjs = $js->row()->nama;
@@ -370,17 +431,9 @@ class Surat_tugas extends CI_Controller {
 			$hex = $functions->getContent();
 		}else{
 			$hex = '';
-		}
-		
+		}	
 
-		$document = file_get_contents("./assets_srtdash/SPT_temp_permohonan.rtf");
-
-		$pecah = explode('/', $nomor_perkara);
-		$kode = $pecah[1];
-
-		//query get jenis perkara
-		$qkode = $this->db->get_where('db_sipp.alur_perkara', array('kode' => $kode));
-		$jnspkr = $qkode->row()->nama;
+		$document = file_get_contents("./assets_srtdash/SPT_temp_permohonan.rtf");		
 
 		$qpihak1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
 

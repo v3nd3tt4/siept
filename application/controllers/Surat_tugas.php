@@ -262,14 +262,20 @@ class Surat_tugas extends CI_Controller {
 		$sbg = '';
 		$qp1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
 		$cek_gugatan = stripos('Gugatan', $jnspkr);
-		if($jnspkr == 'Permohonan'){
-			$sbb = 'Pemohon';
-		}else{
-			$sbb = 'Penggugat';
-		}
+
+
+		// $arrp = array('Pdt.P');
+		
+		$cek_perm = $this->db->get_where('db_siept.tb_kode_permohonan', array('kode_perkara' => $jnspkr));
+		
 		if($qp1->num_rows() > 0){
-			$qp1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
-			if($qp1->num_rows() > 1){
+			if($cek_perm->num_rows() != 0){
+				$sbb = 'Pemohon';
+			}else{
+				$sbb = 'Penggugat';
+			}
+			$qpm1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
+			if($qpm1->num_rows() > 1){
 				$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp1->row()->urutan).'}';
 			}else{
 				$sbg = ' {\b '.$sbb.'}';
@@ -277,8 +283,13 @@ class Surat_tugas extends CI_Controller {
 		}else{
 			$qp2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
 			if($qp2->num_rows() > 0){
-				$qp2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
-				if($qp2->num_rows() > 1){
+				if($cek_perm->num_rows() != 0){
+					$sbb = 'Termohon';
+				}else{
+					$sbb = 'Tergugat';
+				}
+				$qpm2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
+				if($qpm2->num_rows() > 1){
 					$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp2->row()->urutan).'}';
 				}else{
 					$sbg = ' {\b '.$sbb.'}';
@@ -286,8 +297,13 @@ class Surat_tugas extends CI_Controller {
 			}else{
 				$qp4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
 				if($qp4->num_rows() > 0){
-					$qp4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
-					if($qp4->num_rows() > 1){
+					if($cek_perm->num_rows() != 0){
+						$sbb = 'Turut Termohon';
+					}else{
+						$sbb = 'Turut Tergugat';
+					}
+					$qpm4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
+					if($qpm4->num_rows() > 1){
 						$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp4->row()->urutan).'}';
 					}else{
 						$sbg = ' {\b '.$sbb.'}';
