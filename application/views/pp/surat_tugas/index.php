@@ -7,35 +7,71 @@
             <div class="card">
                 <div class="card-body">
                     <p>
-                    <button class="btn btn-default" onclick="window.history.back();"><i class="fa fa-arrow-left"></i> Kembali</button>
-                    <br>
+                        <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
+                        <a href="<?=base_url()?>pp/surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Panggilan</a>
+                    <br><br><br>
                     </p>
-                    <br><br>
-                    <form action="<?=base_url()?>user/simpan" method="POST">
-                        <div class="form-group">
-                            <label for="">Username:</label>
-                            <input type="text" class="form-control" name="username">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Password:</label>
-                            <input type="password" class="form-control" name="password">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Nama:</label>
-                            <input type="text" class="form-control" name="nama_user">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Level:</label>
-                            <select name="level" id="level" class="form-control">
-                                <option value="">--pilih--</option>
-                                <option value="panitera">panitera</option>
-                                <option value="perdata">perdata</option>
-                                <option value="admin">admin</option>
-                                <option value="pp">pp</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success pull-right" > <i class="fa fa-save"></i> Simpan</button>
-                    </form>
+                    <table id="dataTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <!-- <th>Nomor Surat</th> -->
+                                <th>Nomor Perkara</th>
+                                <th>Agenda</th>
+                                <th>Kepada</th>
+                                <th>Status</th>
+                                <!-- <th>Dokumen</th> -->
+                                <!-- <th>Aksi</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no=1;foreach($surat->result() as $rsurat){ 
+                                $q = $this->db->get_where('db_sipp.pihak', array('id' => $rsurat->id_pihak_penerima));
+                                $pihak = $q->row()->nama;
+                                
+                                if($rsurat->id_status == 1){
+                                    $label = 'secondary';
+                                }else if($rsurat->id_status == 2){
+                                    $label = 'warning';
+                                }else if($rsurat->id_status == 3){
+                                    $label = 'danger';
+                                }else if($rsurat->id_status == 4){
+                                    $label = 'success';
+                                }else if($rsurat->id_status == 5){
+                                    $label = 'info';
+                                }
+                            ?>
+                            <tr>
+                                <td><?=$no++?>.</td>
+                                <!-- <td><?=$rsurat->nomor_surat_full?></td> -->
+                                <td><?=$rsurat->nomor_perkara?></td>
+                                <td><?=$rsurat->text?></td>
+                                <td><?=$pihak?></td>
+                                <td>
+                                    <span class="badge badge-<?=$label?>">
+                                    <?=$rsurat->nama_status?>
+                                    </span>
+                                </td>
+                                <!-- <td align="center">
+                                    <a href="<?=base_url()?>panitera/surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> </a>
+                                </td> -->
+                                <!-- <td> -->
+                                    <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
+                                    <?php 
+                                        $arr = array(2);
+                                        if(in_array($rsurat->id_status, $arr) ){
+                                    ?>
+                                        <!-- <a href="<?=base_url()?>panitera/surat_tugas/setujui/<?=$rsurat->id_surat?>" class="btn btn-success btn-xs" onclick="return confirm('Apakah anda yakin akan menyetujui SPT ini?');"> <i class="fa fa-check"></i> ttd elektronik</a> -->
+                                        <!-- <a href="<?=base_url()?>panitera/surat_tugas/tolak/<?=$rsurat->id_surat?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin tidak menyetujui SPT ini?');"> <i class="fa fa-remove"></i> Tidak disetujui</a> -->
+                                    <?php
+
+                                        }
+                                    ?> 
+                                <!-- </td>  -->
+                            </tr>
+                            <?php }?>
+                        </tbody>
+                    </table>
                     <!-- <div class="d-sm-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Market Value And Trends</h4>
                         <select class="custome-select border-0 pr-3">

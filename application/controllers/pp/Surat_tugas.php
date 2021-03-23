@@ -21,8 +21,7 @@ class Surat_tugas extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		$arr = array('admin', 'perdata');
-        if(!in_array($this->session->userdata('level', true),$arr) ){
+        if($this->session->userdata('level', true) != 'pp'){
 			echo '<script>alert("Maaf, anda tidak memiliki akses ke halaman ini");</script>';
             echo '<script>window.location.href = "'.base_url().'";</script>';
 			exit();
@@ -34,22 +33,18 @@ class Surat_tugas extends CI_Controller {
 		$this->db->from('db_siept.tb_surat');
 		$this->db->join('db_siept.tb_acara', 'tb_acara.id_acara = tb_surat.id_acara', 'left');
 		$this->db->join('db_siept.tb_status', 'tb_status.id_status = tb_surat.id_status', 'left');
-		if($this->input->post('id_status',true)){
-			$this->db->where(array('db_siept.tb_surat.id_status' => $this->input->post('id_status',true)));
-		}
+		// $this->db->where(array('db_siept.tb_surat.id_status >=' => 2));
 		$this->db->order_by('id_surat', 'DESC');
-		$this->db->order_by('urutan_nomor_surat', 'DESC');
-		$this->db->order_by('bulan_nomor_surat', 'DESC');
 		$surat = $this->db->get();
 		$data = array(
-			'page' => 'dashboard_surat_tugas',
+			'page' => 'pp/surat_tugas/index',
 			'surat' => $surat,
 			'link' => 'surat_tugas'
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
 
-	public function tambah($id_surat)
+	public function tambah()
 	{
 		// var_dump("expression");exit();
 		$js = $this->db->get_where('db_sipp.jurusita', array('aktif' => 'Y'));
@@ -59,22 +54,14 @@ class Surat_tugas extends CI_Controller {
 		$guna = $this->db->get('db_siept.tb_guna');
 		$acara = $this->db->get('db_siept.tb_acara');
 
-		$get_surat = $this->db->get_where('db_siept.tb_surat', array('id_surat' => $id_surat));
-
-		$pihak = $this->db->get_where('db_sipp.pihak', array('id' => $get_surat->row()->id_pihak_penerima));
-		$jurusita = $this->db->get_where('db_sipp.perkara_jurusita', array('perkara_id' => $get_surat->row()->id_perkara));
-
 		$data = array(
-			'page' => 'tambah_surat_tugas',
+			'page' => 'pp/surat_tugas/tambah_surat_tugas',
 			'js' => $js,
 			'dasar' => $dasar,
 			'perihal' => $perihal,
 			'guna' => $guna,
 			'acara' => $acara,
-			'link' => 'surat_tugas',
-			'get_surat' => $get_surat,
-			'pihak' => $pihak,
-			'jurusita' => $jurusita
+			'link' => 'surat_tugas'
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
@@ -132,7 +119,6 @@ class Surat_tugas extends CI_Controller {
 	}
 
 	public function simpan(){
-		$id_surat = $this->input->post('id_surat', true);
 		$id_perkara = $this->input->post('nomor_perkara', true);
 		$id_pihak_penerima = $this->input->post('tujuan', true);
 		$id_jurusita = $this->input->post('jurusita', true);
@@ -152,25 +138,19 @@ class Surat_tugas extends CI_Controller {
 
 
 		$cek = $this->db->get('db_siept.tb_surat');
-		$cek_tb_no_terakhir = $this->db->get_where('db_siept.tb_no_surat_terakhir', array('status' => 'ya'));
-
-		if($cek_tb_no_terakhir->num_rows() > 0){
+		if($cek->num_rows() == 0){
 			$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
 			$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
 		}else{
-			if($cek->num_rows() == 0){
-				$nomor_urutan = 1;
-			}else{
-				$this->db->from('db_siept.tb_surat');
-				$this->db->order_by('urutan_nomor_surat', 'DESC');
-				$this->db->limit(1);
-				$q = $this->db->get();
-				$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
-			}
+			$this->db->from('db_siept.tb_surat');
+			$this->db->order_by('urutan_nomor_surat', 'DESC');
+			$this->db->limit(1);
+			$q = $this->db->get();
+			$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
 		}
 
 		$q = $this->db->get_where('db_sipp.perkara', array('perkara_id' => $id_perkara));
-		$nomor_perkara = @$q->row()->nomor_perkara;
+		$nomor_perkara = $q->row()->nomor_perkara;
 
 		$bulan = date('n');
 		$tahun = date('Y');
@@ -198,38 +178,38 @@ class Surat_tugas extends CI_Controller {
 
 		// echo $nomor_surat;
 		$data_to_save = array(
-			'nomor_surat_full' => $nomor_surat,
-			// 'id_perkara' => $id_perkara,
-			// 'nomor_perkara' => $nomor_perkara,
-			'id_jurusita' => $id_jurusita,
+			// 'nomor_surat_full' => $nomor_surat,
+			'id_perkara' => $id_perkara,
+			'nomor_perkara' => $nomor_perkara,
+			// 'id_jurusita' => $id_jurusita,
 			// 'perihal' => $perihal,
-			'urutan_nomor_surat' => $nomor_urutan,
-			'bulan_nomor_surat' => $bulan,
-			'tahun_nomor_surat' => $tahun,
-			'tanggal_surat' => $tanggal_surat,
-			// 'id_pihak_penerima' => $id_pihak_penerima,
+			// 'urutan_nomor_surat' => $nomor_urutan,
+			// 'bulan_nomor_surat' => $bulan,
+			// 'tahun_nomor_surat' => $tahun,
+			// 'tanggal_surat' => $tanggal_surat,
+			'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
 			// 'dasar' => $dasar,
 			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
-			'qrcode' => $image_name,
-			'id_dasar' => $id_dasar,
-			'id_perihal' => $id_perihal,
-			'id_status' => 1,
-			'id_guna' => $id_guna,
-			// 'hari' => $hari,
-			// 'pukul' => $pukul,
-			// 'id_acara' => $id_acara
+			// 'qrcode' => $image_name,
+			// 'id_dasar' => $id_dasar,
+			// 'id_perihal' => $id_perihal,
+			'id_status' => 5,
+			// 'id_guna' => $id_guna,
+			'hari' => $hari,
+			'pukul' => $pukul,
+			'id_acara' => $id_acara
 
 		);
 		
 
-		$simpan = $this->db->update('db_siept.tb_surat', $data_to_save, array('id_surat' => $id_surat));
+		$simpan = $this->db->insert('db_siept.tb_surat', $data_to_save);
 		$id_surat = $insert_id = $this->db->insert_id();
 		if($simpan){
 			echo '<script>alert("Berhasil diproses");</script>';
 			// $this->cetak($id_surat);
             // echo '<script>window.location.href = "'.base_url().'surat_tugas/cetak/'.$id_surat.'";</script>';
-			echo '<script>window.location.href = "'.base_url().'surat_tugas";</script>';
+			echo '<script>window.location.href = "'.base_url().'pp/surat_tugas";</script>';
 		}else{
 			echo '<script>alert("Gagal diproses");</script>';
             echo '<script>window.history.back();</script>';
@@ -276,7 +256,6 @@ class Surat_tugas extends CI_Controller {
 		//query get jenis perkara
 		$qkode = $this->db->get_where('db_sipp.alur_perkara', array('kode' => $kode));
 		$jnspkr = $qkode->row()->nama;
-		$kodejnspkr = $qkode->row()->kode;
 
 		//cek1
 		$sbg = '';
@@ -286,7 +265,7 @@ class Surat_tugas extends CI_Controller {
 
 		// $arrp = array('Pdt.P');
 		
-		$cek_perm = $this->db->get_where('db_siept.tb_kode_permohonan', array('kode_perkara' => $kodejnspkr));
+		$cek_perm = $this->db->get_where('db_siept.tb_kode_permohonan', array('kode_perkara' => $jnspkr));
 		
 		if($qp1->num_rows() > 0){
 			if($cek_perm->num_rows() != 0){

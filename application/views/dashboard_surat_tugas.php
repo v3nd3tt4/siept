@@ -9,13 +9,13 @@
                     
                     <p>
                     <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <a href="<?=base_url()?>surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a>
+                    <!-- <a href="<?=base_url()?>surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a> -->
                     <br>
                     </p>
                     <form action="" method="POST">
                         <div class="form-group">
                             <label for="">Filter Status SPT:</label>
-                            <select class="form-control" name="id_status" id="id_status">
+                            <select class="form-control" name="id_status" id="id_status" style="min-height: 50px">
                                 <option value="">--pilih--</option>
                                 <?php
                                 $this->db->from('db_siept.tb_status');
@@ -40,7 +40,7 @@
                                 <th>No</th>
                                 <th>Nomor Surat</th>
                                 <th>Nomor Perkara</th>
-                                <th>Perihal</th>
+                                <th>Agenda</th>
                                 <th>Kepada</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
@@ -59,6 +59,8 @@
                                     $label = 'danger';
                                 }else if($rsurat->id_status == 4){
                                     $label = 'success';
+                                }else if($rsurat->id_status == 5){
+                                    $label = 'info';
                                 }
                             ?>
                             <tr>
@@ -85,6 +87,9 @@
                                         <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> Lihat SPT</a>
                                     <?php }else if($rsurat->id_status == 4){ ?>
                                         <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>
+                                    
+                                    <?php }else if($rsurat->id_status == 5){ ?>
+                                        <a href="<?=base_url()?>surat_tugas/tambah/<?=$rsurat->id_surat?>" class="btn btn-info btn-sm"> <i class="fa fa-pencil"></i> Buat Surat Tugas</a>
                                     <?php }
                                     ?>
                                     

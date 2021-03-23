@@ -23,12 +23,18 @@
                         </li>
                         <?php }?>
                         
-                        <?php $arr = array('admin', 'perdata');if(in_array($this->session->userdata('level', true),$arr) ){
+                        <?php $arr = array('admin', 'perdata');
+                        if(in_array($this->session->userdata('level', true),$arr) ){
                             $l = 'surat_tugas';
-                        }else{
+                            $ltext = 'Surat Tugas';
+                        }else if($this->session->userdata('level', true) == 'panitera'){
                             $l = 'panitera/surat_tugas';
+                            $ltext = 'Surat Tugas';
+                        }else if($this->session->userdata('level', true) == 'pp'){
+                            $l = 'pp/surat_tugas';
+                            $ltext = 'Panggilan';
                         }?>
-                        <li <?php if(@$link=='surat_tugas'){?> class="active" <?php }?>><a href="<?=base_url()?><?=$l?>"><i class="ti-map-alt"></i> <span>Surat Tugas</span></a></li>
+                        <li <?php if(@$link=='surat_tugas'){?> class="active" <?php }?>><a href="<?=base_url()?><?=$l?>"><i class="ti-map-alt"></i> <span><?=$ltext?></span></a></li>
 
                         <?php if($this->session->userdata('level') == 'admin'){?>
                         <li <?php if(@$link=='user'){?> class="active" <?php }?>><a href="<?=base_url()?>user"><i class="ti-user"></i> <span>User</span></a></li>

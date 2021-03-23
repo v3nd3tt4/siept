@@ -227,6 +227,17 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript">
+        <?php $arr = array('admin', 'perdata');
+        if(in_array($this->session->userdata('level', true),$arr) ){
+            $l = 'surat_tugas';
+            $ltext = 'Surat Tugas';
+        }else if($this->session->userdata('level', true) == 'panitera'){
+            $l = 'panitera/surat_tugas';
+            $ltext = 'Surat Tugas';
+        }else if($this->session->userdata('level', true) == 'pp'){
+            $l = 'pp/surat_tugas';
+            $ltext = 'Panggilan';
+        }?>
         $(function(){
             $('.select2').select2();
             $('#nomor_perkara').select2({
@@ -236,7 +247,7 @@
                 ajax: {
                     type: 'POST',
                     dataType: 'json',
-                    url: '<?=base_url()?>surat_tugas/get_nomor_perkara',
+                    url: '<?=base_url().$l?>/get_nomor_perkara',
                     delay: 100,
                     data: function(params) {
                         return {
@@ -260,7 +271,7 @@
                 e.preventDefault();
                 var perkara_id = $(this).val();
                 $.ajax({
-                    url: '<?=base_url()?>surat_tugas/get_pihak',
+                    url: '<?=base_url().$l?>/get_pihak',
                     type : 'POST',
                     dataType: 'JSON',
                     data: {'perkara_id':perkara_id},

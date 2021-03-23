@@ -28,7 +28,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css"> -->
 
-    
+    <style>
+        select{
+            min-height: 50px;
+        }
+    </style>
 </head>
 <body>
       <!--[if lt IE 8]>

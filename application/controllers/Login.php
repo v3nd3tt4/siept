@@ -37,6 +37,8 @@ class Login extends CI_Controller
             echo '<script>alert("Berhasil Login");</script>';
             if($cek->row()->level == 'panitera'){
                 echo '<script>window.location.href = "'.base_url().'panitera/surat_tugas";</script>';
+            }else if($cek->row()->level == 'pp'){
+                echo '<script>window.location.href = "'.base_url().'pp/surat_tugas";</script>';
             }else{
                 echo '<script>window.location.href = "'.base_url().'surat_tugas";</script>';
             }            

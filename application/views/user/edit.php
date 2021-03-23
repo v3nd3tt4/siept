@@ -32,6 +32,7 @@
                                 <option value="panitera" <?=$user->row()->level == 'panitera' ? 'selected' : ''?>>panitera</option>
                                 <option value="perdata" <?=$user->row()->level == 'perdata' ? 'selected' : ''?>>perdata</option>
                                 <option value="admin" <?=$user->row()->level == 'admin' ? 'selected' : ''?>>admin</option>
+                                <option value="pp" <?=$user->row()->level == 'pp' ? 'selected' : ''?>>pp</option>
                             </select>
                         </div>
                         <button class="btn btn-success pull-right" > <i class="fa fa-save"></i> Update</button>
