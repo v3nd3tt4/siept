@@ -21,6 +21,12 @@
                                 <li <?php if(@$link=='acara'){?> class="active" <?php }?>><a href="<?=base_url()?>master/acara">Acara</a></li>
                             </ul>
                         </li>
+                        <li <?php if(@$link=='nst'){?> class="active" <?php }?>>
+                            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>setting</span></a>
+                            <ul class="collapse">
+                                <li <?php if(@$link=='nst'){?> class="active" <?php }?>><a href="<?=base_url()?>setting/nst">Nomor Surat Terakhir</a></li>
+                            </ul>
+                        </li>
                         <?php }?>
                         
                         <?php $arr = array('admin', 'perdata');
