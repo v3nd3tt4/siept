@@ -32,6 +32,7 @@
                                 <option value="perdata">perdata</option>
                                 <option value="admin">admin</option>
                                 <option value="pp">pp</option>
+                                <option value="jurusita">jurusita</option>
                             </select>
                         </div>
                         <button class="btn btn-success pull-right" > <i class="fa fa-save"></i> Simpan</button>

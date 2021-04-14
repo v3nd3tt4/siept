@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             <?php $no=1;foreach($surat->result() as $rsurat){ 
-                                $q = $this->db->get_where('db_sipp.pihak', array('id' => $rsurat->id_pihak_penerima));
+                                $q = $this->db->get_where('sipp320.pihak', array('id' => $rsurat->id_pihak_penerima));
                                 $pihak = $q->row()->nama;
                                 
                                 if($rsurat->id_status == 1){

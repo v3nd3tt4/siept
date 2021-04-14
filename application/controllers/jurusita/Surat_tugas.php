@@ -21,7 +21,7 @@ class Surat_tugas extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-        if($this->session->userdata('level', true) != 'panitera'){
+        if($this->session->userdata('level', true) != 'jurusita'){
 			echo '<script>alert("Maaf, anda tidak memiliki akses ke halaman ini");</script>';
             echo '<script>window.location.href = "'.base_url().'";</script>';
 			exit();
@@ -29,15 +29,19 @@ class Surat_tugas extends CI_Controller {
     }
 	public function index()
 	{
+		$get_id_jurusita = $this->db->get_where('db_siept.tb_user', array('id_user' => $this->session->userdata('id_user')));
+		$id_jurusita = $get_id_jurusita->row()->id_sipp320;
 		// var_dump("expression");exit();
 		$this->db->from('db_siept.tb_surat');
-		$this->db->join('db_siept.tb_perihal', 'tb_perihal.id_perihal = tb_surat.id_perihal');
-		$this->db->join('db_siept.tb_status', 'tb_status.id_status = tb_surat.id_status');
-		$this->db->where(array('db_siept.tb_surat.id_status >=' => 2));
+		$this->db->join('db_siept.tb_acara', 'tb_acara.id_acara = tb_surat.id_acara', 'left');
+		$this->db->join('db_siept.tb_status', 'tb_status.id_status = tb_surat.id_status', 'left');		
+		$this->db->where(array('db_siept.tb_surat.id_jurusita' => $id_jurusita));
+		$this->db->where_in('db_siept.tb_surat.id_status ', array(4, 6));
 		$this->db->order_by('id_surat', 'DESC');
 		$surat = $this->db->get();
+		// echo $this->db->last_query();exit();
 		$data = array(
-			'page' => 'panitera/surat_tugas/index',
+			'page' => 'jurusita/surat_tugas/index',
 			'surat' => $surat,
 			'link' => 'surat_tugas'
 		);
@@ -51,12 +55,16 @@ class Surat_tugas extends CI_Controller {
 
 		$dasar = $this->db->get('db_siept.tb_dasar');
 		$perihal = $this->db->get('db_siept.tb_perihal');
+		$guna = $this->db->get('db_siept.tb_guna');
+		$acara = $this->db->get('db_siept.tb_acara');
 
 		$data = array(
-			'page' => 'tambah_surat_tugas',
+			'page' => 'jurusita/surat_tugas/tambah_surat_tugas',
 			'js' => $js,
 			'dasar' => $dasar,
 			'perihal' => $perihal,
+			'guna' => $guna,
+			'acara' => $acara,
 			'link' => 'surat_tugas'
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
@@ -121,13 +129,22 @@ class Surat_tugas extends CI_Controller {
 		$tanggal_surat = $this->input->post('tanggal_surat', true);
 		$perihal = $this->input->post('perihal', true);
 		$dasar = $this->input->post('dasar', true);
+		$guna = $this->input->post('guna', true);
+
+		$hari = $this->input->post('tanggal', true);
+		$pukul = $this->input->post('pukul', true);
+		$acara = $this->input->post('acara', true);
 
 		$id_dasar = $dasar;
 		$id_perihal = $perihal;
+		$id_guna = $guna;
+		$id_acara = $acara;
+
 
 		$cek = $this->db->get('db_siept.tb_surat');
 		if($cek->num_rows() == 0){
-			$nomor_urutan = 1;
+			$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
+			$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
 		}else{
 			$this->db->from('db_siept.tb_surat');
 			$this->db->order_by('urutan_nomor_surat', 'DESC');
@@ -165,23 +182,28 @@ class Surat_tugas extends CI_Controller {
 
 		// echo $nomor_surat;
 		$data_to_save = array(
-			'nomor_surat_full' => $nomor_surat,
+			// 'nomor_surat_full' => $nomor_surat,
 			'id_perkara' => $id_perkara,
 			'nomor_perkara' => $nomor_perkara,
-			'id_jurusita' => $id_jurusita,
+			// 'id_jurusita' => $id_jurusita,
 			// 'perihal' => $perihal,
-			'urutan_nomor_surat' => $nomor_urutan,
-			'bulan_nomor_surat' => $bulan,
-			'tahun_nomor_surat' => $tahun,
-			'tanggal_surat' => $tanggal_surat,
+			// 'urutan_nomor_surat' => $nomor_urutan,
+			// 'bulan_nomor_surat' => $bulan,
+			// 'tahun_nomor_surat' => $tahun,
+			// 'tanggal_surat' => $tanggal_surat,
 			'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
 			// 'dasar' => $dasar,
-			'pembuat' => empty($this->session->userdata('user')) ? 'vendetta' : $this->session->userdata('user'),
-			'qrcode' => $image_name,
-			'id_dasar' => $id_dasar,
-			'id_perihal' => $id_perihal,
-			'id_status' => 1
+			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
+			// 'qrcode' => $image_name,
+			// 'id_dasar' => $id_dasar,
+			// 'id_perihal' => $id_perihal,
+			'id_status' => 5,
+			// 'id_guna' => $id_guna,
+			'hari' => $hari,
+			'pukul' => $pukul,
+			'id_acara' => $id_acara
+
 		);
 		
 
@@ -189,8 +211,9 @@ class Surat_tugas extends CI_Controller {
 		$id_surat = $insert_id = $this->db->insert_id();
 		if($simpan){
 			echo '<script>alert("Berhasil diproses");</script>';
+			// $this->cetak($id_surat);
             // echo '<script>window.location.href = "'.base_url().'surat_tugas/cetak/'.$id_surat.'";</script>';
-			echo '<script>window.location.href = "'.base_url().'surat_tugas";</script>';
+			echo '<script>window.location.href = "'.base_url().'jurusita/surat_tugas";</script>';
 		}else{
 			echo '<script>alert("Gagal diproses");</script>';
             echo '<script>window.history.back();</script>';
@@ -200,126 +223,6 @@ class Surat_tugas extends CI_Controller {
 
 	public function detail($id_surat){
 		echo $id_surat;
-	}
-
-	public function cetak_backup($id_surat){
-		$qu = $this->db->get_where('db_siept.tb_surat', array('id_surat' => $id_surat));
-		$qu = $qu->row();
-
-		$nomor_surat = $qu->nomor_surat_full;
-		$nomor_perkara = $qu->nomor_perkara;
-
-		$dasar = $this->db->get_where('db_siept.tb_dasar', array('id_dasar' => $qu->id_dasar));
-		$perihal = $this->db->get_where('db_siept.tb_perihal', array('id_perihal' => $qu->id_perihal));
-
-		$perihal = $perihal->row()->text;
-		$tanggal_surat = tgl_indo($qu->tanggal_surat);
-		$dasar = $dasar->row()->text;
-
-		$qtujuan = $this->db->get_where('sipp320.pihak', array('id' => $qu->id_pihak_penerima));
-        $pihak = $qtujuan->row()->nama;
-		$nmtujuan = $pihak;
-		$almtujuan = $qtujuan->row()->alamat;
-
-		$js = $this->db->get_where('sipp320.jurusita', array('aktif' => 'Y', 'id' => $qu->id_jurusita));
-		$nmjs = $js->row()->nama;
-		$nipjs = $js->row()->nip;
-
-		$jabatanjs = 'Jurusita';
-		
-		$ttdel = './assets_srtdash/qrcode/'.$qu->qrcode; 
-		
-		include './application/libraries/Image.php';
-		$functions = new Image($ttdel);
-
-		if($qu->id_status == '4'){
-			$hex = $functions->getContent();
-		}else{
-			$hex = '';
-		}
-
-		$document = file_get_contents("./assets_srtdash/SPT_temp.rtf");
-
-		$pecah = explode('/', $nomor_perkara);
-		$kode = $pecah[1];
-
-		//query get jenis perkara
-		$qkode = $this->db->get_where('sipp320.alur_perkara', array('kode' => $kode));
-		$jnspkr = $qkode->row()->nama;
-
-		$qpihak1 = $this->db->get_where('sipp320.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
-
-		$pihak1 = '';
-		foreach($qpihak1->result()  as $rpihak1){
-			// $pihak1 .= '{\pard ';
-			$pihak1 .=  '{\b '.$rpihak1->nama.'}, beralamat di '.$rpihak1->alamat.'; '; 
-			// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
-			// $pihak1 .= ' \par}';
-		}
-
-		$qpihak2 = $this->db->get_where('sipp320.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
-
-		$pihak2 = '';
-		foreach($qpihak2->result()  as $rpihak2){
-			// $pihak1 .= '{\pard ';
-			$pihak2 .=  '{\b '.$rpihak2->nama.'}, beralamat di '.$rpihak2->alamat.'; '; 
-			// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
-			// $pihak1 .= ' \par}';
-		}
-
-		$qpihak4 = $this->db->get_where('sipp320.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
-
-		$pihak4 = '';
-		$no4=1;
-		if($qpihak4->num_rows() > 0){
-			$pihak4 .= ' {\pard\qc Dan \par}';
-		}
-		if($qpihak4->num_rows() > 1){
-			// $pihak4 .= '{\rtf1 ';
-			// $pihak4 .= '\pard{\pntext\f0 1.\tab}\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}';
-			// $pihak4 .= '\fi-360\li480\sa50\sl0\slmult1';
-			
-			
-			foreach($qpihak4->result()  as $rpihak4){
-				$pihak1 .= '{\pard ';
-				$pihak4 .=  '{\b '.$no4.'. '.$rpihak4->nama.'}, beralamat di '.$rpihak4->alamat.';\line\line'; 
-				// $pihak4 .= $rpihak4->nama.' beralamat di '.$rpihak4->alamat.';\par';
-				// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
-				$pihak1 .= '\par}';
-				$no4++;
-			}
-			// $pihak4 .= '\pard\par normal text';
-			// $pihak4 .= '}';
-		}else if($qpihak4->num_rows() == 1){
-			foreach($qpihak4->result()  as $rpihak4){
-				// $pihak1 .= '{\pard ';
-				$pihak4 .=  '{\b '.$rpihak4->nama.'}, beralamat di '.$rpihak4->alamat.';\line \line '; 
-				// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
-				// $pihak1 .= '\par}';
-			}
-		}
- 
-		// mereplace tanda %%%NAMA% dengan data nama dari form
-		$document = str_replace("%%nosur%%", $nomor_surat, $document);
-		$document = str_replace("%%noper%%", $nomor_perkara, $document);
-		$document = str_replace("%%perihal%%", $perihal, $document);
-		$document = str_replace("%%tglbuat%%", $tanggal_surat, $document);
-		$document = str_replace("%%nmtujuan%%", $nmtujuan, $document);
-		$document = str_replace("%%almtujuan%%", $almtujuan, $document);
-		$document = str_replace("%%nmjs%%", $nmjs, $document);
-		$document = str_replace("%%nipjs%%", $nipjs, $document);
-		$document = str_replace("%%jabatanjs%%", $jabatanjs, $document);
-		$document = str_replace("%%dasar%%", $dasar, $document);
-		$document = str_replace("%%ttdel%%", $hex, $document);
-		$document = str_replace("%%jnspkr%%", $jnspkr, $document);
-		$document = str_replace("%%pihak1%%", $pihak1, $document);
-		$document = str_replace("%%p2%%", $pihak2, $document);
-		$document = str_replace("%%pemdll%%", $pihak4, $document);
-
-		header("Content-type: application/msword");
-		header("Content-disposition: inline; filename=".$nomor_surat.".rtf");
-		header("Content-length: " . strlen($document));
-		echo $document;
 	}
 
 	public function cetak($id_surat){
@@ -357,7 +260,6 @@ class Surat_tugas extends CI_Controller {
 		//query get jenis perkara
 		$qkode = $this->db->get_where('sipp320.alur_perkara', array('kode' => $kode));
 		$jnspkr = $qkode->row()->nama;
-		$kodejnspkr = $qkode->row()->kode;
 
 		//cek1
 		$sbg = '';
@@ -367,7 +269,7 @@ class Surat_tugas extends CI_Controller {
 
 		// $arrp = array('Pdt.P');
 		
-		$cek_perm = $this->db->get_where('db_siept.tb_kode_permohonan', array('kode_perkara' => $kodejnspkr));
+		$cek_perm = $this->db->get_where('db_siept.tb_kode_permohonan', array('kode_perkara' => $jnspkr));
 		
 		if($qp1->num_rows() > 0){
 			if($cek_perm->num_rows() != 0){
@@ -516,10 +418,132 @@ class Surat_tugas extends CI_Controller {
 		header("Content-disposition: inline; filename=".$nomor_surat.".rtf");
 		header("Content-length: " . strlen($document));
 		echo $document;
+		// redirect(base_url().'surat_tugas', 'refresh');
+		// echo '<script>window.location.href = "'.base_url().'surat_tugas";</script>';
 	}
 
-	public function setujui($id_surat){
-		$update = $this->db->update('db_siept.tb_surat', array('id_status' => 4), array('id_surat' => $id_surat));
+	public function cetak_backup($id_surat){
+		$qu = $this->db->get_where('db_siept.tb_surat', array('id_surat' => $id_surat));
+		$qu = $qu->row();
+
+		$nomor_surat = $qu->nomor_surat_full;
+		$nomor_perkara = $qu->nomor_perkara;
+
+		$dasar = $this->db->get_where('db_siept.tb_dasar', array('id_dasar' => $qu->id_dasar));
+		$perihal = $this->db->get_where('db_siept.tb_perihal', array('id_perihal' => $qu->id_perihal));
+
+		$perihal = $perihal->row()->text;
+		$tanggal_surat = tgl_indo($qu->tanggal_surat);
+		$dasar = $dasar->row()->text;
+
+		$qtujuan = $this->db->get_where('sipp320.pihak', array('id' => $qu->id_pihak_penerima));
+        $pihak = $qtujuan->row()->nama;
+		$nmtujuan = $pihak;
+		$almtujuan = $qtujuan->row()->alamat;
+
+		$js = $this->db->get_where('sipp320.jurusita', array('aktif' => 'Y', 'id' => $qu->id_jurusita));
+		$nmjs = $js->row()->nama;
+		$nipjs = $js->row()->nip;
+
+		$jabatanjs = 'Jurusita';
+		
+		$ttdel = './assets_srtdash/qrcode/'.$qu->qrcode; 
+		
+		include './application/libraries/Image.php';
+		$functions = new Image($ttdel);
+		if($qu->id_status == '4'){
+			$hex = $functions->getContent();
+		}else{
+			$hex = '';
+		}
+		
+
+		$document = file_get_contents("./assets_srtdash/SPT_temp.rtf");
+
+		$pecah = explode('/', $nomor_perkara);
+		$kode = $pecah[1];
+
+		//query get jenis perkara
+		$qkode = $this->db->get_where('sipp320.alur_perkara', array('kode' => $kode));
+		$jnspkr = $qkode->row()->nama;
+
+		$qpihak1 = $this->db->get_where('sipp320.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
+
+		$pihak1 = '';
+		foreach($qpihak1->result()  as $rpihak1){
+			// $pihak1 .= '{\pard ';
+			$pihak1 .=  '{\b '.$rpihak1->nama.'}, beralamat di '.$rpihak1->alamat.'; '; 
+			// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
+			// $pihak1 .= ' \par}';
+		}
+
+		$qpihak2 = $this->db->get_where('sipp320.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
+
+		$pihak2 = '';
+		foreach($qpihak2->result()  as $rpihak2){
+			// $pihak1 .= '{\pard ';
+			$pihak2 .=  '{\b '.$rpihak2->nama.'}, beralamat di '.$rpihak2->alamat.'; '; 
+			// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
+			// $pihak1 .= ' \par}';
+		}
+
+		$qpihak4 = $this->db->get_where('sipp320.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
+
+		$pihak4 = '';
+		$no4=1;
+		if($qpihak4->num_rows() > 0){
+			$pihak4 .= ' {\pard\qc Dan \par}';
+		}
+		if($qpihak4->num_rows() > 1){
+			// $pihak4 .= '{\rtf1 ';
+			// $pihak4 .= '\pard{\pntext\f0 1.\tab}\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pndec{\pntxta.}';
+			// $pihak4 .= '\fi-360\li480\sa50\sl0\slmult1';
+			
+			
+			foreach($qpihak4->result()  as $rpihak4){
+				$pihak1 .= '{\pard ';
+				$pihak4 .=  '{\b '.$no4.'. '.$rpihak4->nama.'}, beralamat di '.$rpihak4->alamat.';\line\line'; 
+				// $pihak4 .= $rpihak4->nama.' beralamat di '.$rpihak4->alamat.';\par';
+				// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
+				$pihak1 .= '\par}';
+				$no4++;
+			}
+			// $pihak4 .= '\pard\par normal text';
+			// $pihak4 .= '}';
+		}else if($qpihak4->num_rows() == 1){
+			foreach($qpihak4->result()  as $rpihak4){
+				// $pihak1 .= '{\pard ';
+				$pihak4 .=  '{\b '.$rpihak4->nama.'}, beralamat di '.$rpihak4->alamat.';\line \line '; 
+				// $pihak1 .=  $rpihak1->nama.', beralamat di '.$rpihak1->alamat.'; \line'; 
+				// $pihak1 .= '\par}';
+			}
+		}
+ 
+		// mereplace tanda %%%NAMA% dengan data nama dari form
+		$document = str_replace("%%nosur%%", $nomor_surat, $document);
+		$document = str_replace("%%noper%%", $nomor_perkara, $document);
+		$document = str_replace("%%perihal%%", $perihal, $document);
+		$document = str_replace("%%tglbuat%%", $tanggal_surat, $document);
+		$document = str_replace("%%nmtujuan%%", $nmtujuan, $document);
+		$document = str_replace("%%almtujuan%%", $almtujuan, $document);
+		$document = str_replace("%%nmjs%%", $nmjs, $document);
+		$document = str_replace("%%nipjs%%", $nipjs, $document);
+		$document = str_replace("%%jabatanjs%%", $jabatanjs, $document);
+		$document = str_replace("%%dasar%%", $dasar, $document);
+		$document = str_replace("%%ttdel%%", $hex, $document);
+		$document = str_replace("%%jnspkr%%", $jnspkr, $document);
+		$document = str_replace("%%pihak1%%", $pihak1, $document);
+		$document = str_replace("%%p2%%", $pihak2, $document);
+		$document = str_replace("%%pemdll%%", $pihak4, $document);
+
+		header("Content-type: application/msword");
+		header("Content-disposition: inline; filename=spt.rtf");
+		header("Content-length: " . strlen($document));
+		echo $document;
+	}
+
+	public function teruskan($id_surat){
+		$update = $this->db->update('db_siept.tb_surat', array('id_status' => 2), array('id_surat' => $id_surat));
 		if($update){
 			echo '<script>alert("Berhasil disimpan");</script>';
 			echo '<script>window.history.back();</script>';
@@ -529,8 +553,8 @@ class Surat_tugas extends CI_Controller {
 		}
 	}
 
-	public function tolak($id_surat){
-		$update = $this->db->update('db_siept.tb_surat', array('id_status' => 3), array('id_surat' => $id_surat));
+	public function selesai($id_surat){
+		$update = $this->db->update('db_siept.tb_surat', array('id_status' => 6), array('id_surat' => $id_surat));
 		if($update){
 			echo '<script>alert("Berhasil disimpan");</script>';
 			echo '<script>window.history.back();</script>';

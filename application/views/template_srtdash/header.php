@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<?=base_url()?>assets_srtdash/css/owl.carousel.min.css">
     <link rel="stylesheet" href="<?=base_url()?>assets_srtdash/css/slicknav.min.css">
     <!-- amchart css -->
-    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" /> -->
     <!-- others css -->
     <link rel="stylesheet" href="<?=base_url()?>assets_srtdash/css/typography.css">
     <link rel="stylesheet" href="<?=base_url()?>assets_srtdash/css/default-css.css">

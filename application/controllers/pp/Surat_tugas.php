@@ -47,7 +47,7 @@ class Surat_tugas extends CI_Controller {
 	public function tambah()
 	{
 		// var_dump("expression");exit();
-		$js = $this->db->get_where('db_sipp.jurusita', array('aktif' => 'Y'));
+		$js = $this->db->get_where('sipp320.jurusita', array('aktif' => 'Y'));
 
 		$dasar = $this->db->get('db_siept.tb_dasar');
 		$perihal = $this->db->get('db_siept.tb_perihal');
@@ -68,8 +68,8 @@ class Surat_tugas extends CI_Controller {
 
 	public function get_nomor_perkara(){
 		$nomor_perkara = $this->input->post('search', true);
-		$this->db->from('db_sipp.perkara');
-		$this->db->like(array('db_sipp.perkara.nomor_perkara' => $nomor_perkara));
+		$this->db->from('sipp320.perkara');
+		$this->db->like(array('sipp320.perkara.nomor_perkara' => $nomor_perkara));
 		$this->db->limit(10);
 		$r = $this->db->get();
 		if($r->num_rows() > 0){
@@ -89,7 +89,7 @@ class Surat_tugas extends CI_Controller {
 	public function get_pihak(){
 		$perkara_id = $this->input->post('perkara_id');
 		$pihak = array();
-		$q = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $perkara_id));
+		$q = $this->db->get_where('sipp320.perkara_pihak1', array('perkara_id' => $perkara_id));
 		foreach($q->result() as $rp1){
 			$pihak[] = array(
 				'id_pihak' => $rp1->pihak_id,
@@ -98,7 +98,7 @@ class Surat_tugas extends CI_Controller {
 			);
 		}
 
-		$q2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $perkara_id));
+		$q2 = $this->db->get_where('sipp320.perkara_pihak2', array('perkara_id' => $perkara_id));
 		foreach($q2->result() as $rp2){
 			$pihak[] = array(
 				'id_pihak' => $rp2->pihak_id,
@@ -107,7 +107,7 @@ class Surat_tugas extends CI_Controller {
 			);
 		}
 
-		$q3 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $perkara_id));
+		$q3 = $this->db->get_where('sipp320.perkara_pihak4', array('perkara_id' => $perkara_id));
 		foreach($q3->result() as $rp3){
 			$pihak[] = array(
 				'id_pihak' => $rp3->pihak_id,
@@ -149,7 +149,7 @@ class Surat_tugas extends CI_Controller {
 			$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
 		}
 
-		$q = $this->db->get_where('db_sipp.perkara', array('perkara_id' => $id_perkara));
+		$q = $this->db->get_where('sipp320.perkara', array('perkara_id' => $id_perkara));
 		$nomor_perkara = $q->row()->nomor_perkara;
 
 		$bulan = date('n');
@@ -229,7 +229,7 @@ class Surat_tugas extends CI_Controller {
 		$nomor_perkara = $qu->nomor_perkara;
 
 		$perkara_id = $qu->id_perkara;
-		$qperkara = $this->db->get_where('db_sipp.perkara', array('perkara_id' => $perkara_id));
+		$qperkara = $this->db->get_where('sipp320.perkara', array('perkara_id' => $perkara_id));
 
 		$tglregister = tgl_indo($qperkara->row()->tanggal_pendaftaran);
 
@@ -254,12 +254,12 @@ class Surat_tugas extends CI_Controller {
 		$kode = $pecah[1];
 
 		//query get jenis perkara
-		$qkode = $this->db->get_where('db_sipp.alur_perkara', array('kode' => $kode));
+		$qkode = $this->db->get_where('sipp320.alur_perkara', array('kode' => $kode));
 		$jnspkr = $qkode->row()->nama;
 
 		//cek1
 		$sbg = '';
-		$qp1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
+		$qp1 = $this->db->get_where('sipp320.perkara_pihak1', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
 		$cek_gugatan = stripos('Gugatan', $jnspkr);
 
 
@@ -273,35 +273,35 @@ class Surat_tugas extends CI_Controller {
 			}else{
 				$sbb = 'Penggugat';
 			}
-			$qpm1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
+			$qpm1 = $this->db->get_where('sipp320.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
 			if($qpm1->num_rows() > 1){
 				$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp1->row()->urutan).'}';
 			}else{
 				$sbg = ' {\b '.$sbb.'}';
 			}			
 		}else{
-			$qp2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
+			$qp2 = $this->db->get_where('sipp320.perkara_pihak2', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
 			if($qp2->num_rows() > 0){
 				if($cek_perm->num_rows() != 0){
 					$sbb = 'Termohon';
 				}else{
 					$sbb = 'Tergugat';
 				}
-				$qpm2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
+				$qpm2 = $this->db->get_where('sipp320.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
 				if($qpm2->num_rows() > 1){
 					$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp2->row()->urutan).'}';
 				}else{
 					$sbg = ' {\b '.$sbb.'}';
 				}	
 			}else{
-				$qp4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
+				$qp4 = $this->db->get_where('sipp320.perkara_pihak4', array('perkara_id' => $qu->id_perkara, 'pihak_id' => $qu->id_pihak_penerima));
 				if($qp4->num_rows() > 0){
 					if($cek_perm->num_rows() != 0){
 						$sbb = 'Turut Termohon';
 					}else{
 						$sbb = 'Turut Tergugat';
 					}
-					$qpm4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
+					$qpm4 = $this->db->get_where('sipp320.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
 					if($qpm4->num_rows() > 1){
 						$sbg = ' {\b '.$sbb.' '. KonDecRomawi($qp4->row()->urutan).'}';
 					}else{
@@ -311,12 +311,12 @@ class Surat_tugas extends CI_Controller {
 			}
 		}
 
-		$qtujuan = $this->db->get_where('db_sipp.pihak', array('id' => $qu->id_pihak_penerima));
+		$qtujuan = $this->db->get_where('sipp320.pihak', array('id' => $qu->id_pihak_penerima));
         $pihak = $qtujuan->row()->nama;
 		$nmtujuan = $pihak;
 		$almtujuan = $qtujuan->row()->alamat.', dalam hal ini disebut sebagai '.$sbg.';';
 
-		$js = $this->db->get_where('db_sipp.jurusita', array('aktif' => 'Y', 'id' => $qu->id_jurusita));
+		$js = $this->db->get_where('sipp320.jurusita', array('aktif' => 'Y', 'id' => $qu->id_jurusita));
 		$nmjs = $js->row()->nama;
 		$nipjs = $js->row()->nip;
 
@@ -326,7 +326,8 @@ class Surat_tugas extends CI_Controller {
 		
 		include './application/libraries/Image.php';
 		$functions = new Image($ttdel);
-		if($qu->id_status == '4'){
+		$ttdarr = array('4', '6');
+		if(in_array($qu->id_status, $ttdarr)){
 			$hex = $functions->getContent();
 		}else{
 			$hex = '';
@@ -334,7 +335,7 @@ class Surat_tugas extends CI_Controller {
 
 		$document = file_get_contents("./assets_srtdash/SPT_temp_permohonan.rtf");		
 
-		$qpihak1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
+		$qpihak1 = $this->db->get_where('sipp320.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
 
 		$pihak1 = '';
 		foreach($qpihak1->result()  as $rpihak1){
@@ -344,7 +345,7 @@ class Surat_tugas extends CI_Controller {
 			// $pihak1 .= ' \par}';
 		}
 
-		$qpihak2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
+		$qpihak2 = $this->db->get_where('sipp320.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
 
 		$pihak2 = '';
 		foreach($qpihak2->result()  as $rpihak2){
@@ -354,7 +355,7 @@ class Surat_tugas extends CI_Controller {
 			// $pihak1 .= ' \par}';
 		}
 
-		$qpihak4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
+		$qpihak4 = $this->db->get_where('sipp320.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
 
 		$pihak4 = '';
 		$no4=1;
@@ -431,12 +432,12 @@ class Surat_tugas extends CI_Controller {
 		$tanggal_surat = tgl_indo($qu->tanggal_surat);
 		$dasar = $dasar->row()->text;
 
-		$qtujuan = $this->db->get_where('db_sipp.pihak', array('id' => $qu->id_pihak_penerima));
+		$qtujuan = $this->db->get_where('sipp320.pihak', array('id' => $qu->id_pihak_penerima));
         $pihak = $qtujuan->row()->nama;
 		$nmtujuan = $pihak;
 		$almtujuan = $qtujuan->row()->alamat;
 
-		$js = $this->db->get_where('db_sipp.jurusita', array('aktif' => 'Y', 'id' => $qu->id_jurusita));
+		$js = $this->db->get_where('sipp320.jurusita', array('aktif' => 'Y', 'id' => $qu->id_jurusita));
 		$nmjs = $js->row()->nama;
 		$nipjs = $js->row()->nip;
 
@@ -459,10 +460,10 @@ class Surat_tugas extends CI_Controller {
 		$kode = $pecah[1];
 
 		//query get jenis perkara
-		$qkode = $this->db->get_where('db_sipp.alur_perkara', array('kode' => $kode));
+		$qkode = $this->db->get_where('sipp320.alur_perkara', array('kode' => $kode));
 		$jnspkr = $qkode->row()->nama;
 
-		$qpihak1 = $this->db->get_where('db_sipp.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
+		$qpihak1 = $this->db->get_where('sipp320.perkara_pihak1', array('perkara_id' => $qu->id_perkara));
 
 		$pihak1 = '';
 		foreach($qpihak1->result()  as $rpihak1){
@@ -472,7 +473,7 @@ class Surat_tugas extends CI_Controller {
 			// $pihak1 .= ' \par}';
 		}
 
-		$qpihak2 = $this->db->get_where('db_sipp.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
+		$qpihak2 = $this->db->get_where('sipp320.perkara_pihak2', array('perkara_id' => $qu->id_perkara));
 
 		$pihak2 = '';
 		foreach($qpihak2->result()  as $rpihak2){
@@ -482,7 +483,7 @@ class Surat_tugas extends CI_Controller {
 			// $pihak1 .= ' \par}';
 		}
 
-		$qpihak4 = $this->db->get_where('db_sipp.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
+		$qpihak4 = $this->db->get_where('sipp320.perkara_pihak4', array('perkara_id' => $qu->id_perkara));
 
 		$pihak4 = '';
 		$no4=1;

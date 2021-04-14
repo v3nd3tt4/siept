@@ -39,6 +39,9 @@
                         }else if($this->session->userdata('level', true) == 'pp'){
                             $l = 'pp/surat_tugas';
                             $ltext = 'Panggilan';
+                        }else if($this->session->userdata('level', true) == 'jurusita'){
+                            $l = 'jurusita/surat_tugas';
+                            $ltext = 'Surat Tugas';
                         }?>
                         <li <?php if(@$link=='surat_tugas'){?> class="active" <?php }?>><a href="<?=base_url()?><?=$l?>"><i class="ti-map-alt"></i> <span><?=$ltext?></span></a></li>
 

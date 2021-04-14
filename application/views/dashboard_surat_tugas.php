@@ -48,7 +48,7 @@
                         </thead>
                         <tbody>
                             <?php $no=1;foreach($surat->result() as $rsurat){ 
-                                $q = $this->db->get_where('db_sipp.pihak', array('id' => $rsurat->id_pihak_penerima));
+                                $q = $this->db->get_where('sipp320.pihak', array('id' => $rsurat->id_pihak_penerima));
                                 $pihak = $q->row()->nama;
                                 
                                 if($rsurat->id_status == 1){
@@ -86,10 +86,11 @@
                                         <a href="<?=base_url()?>surat_tugas/teruskan/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs" onclick="return confirm('Apakah anda yakin meneruskan SPT ini ke Panitera?');"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
                                         <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> Lihat SPT</a>
                                     <?php }else if($rsurat->id_status == 4){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>
-                                    
+                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>                                    
                                     <?php }else if($rsurat->id_status == 5){ ?>
                                         <a href="<?=base_url()?>surat_tugas/tambah/<?=$rsurat->id_surat?>" class="btn btn-info btn-sm"> <i class="fa fa-pencil"></i> Buat Surat Tugas</a>
+                                    <?php }else if($rsurat->id_status == 6){ ?>
+                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>
                                     <?php }
                                     ?>
                                     
