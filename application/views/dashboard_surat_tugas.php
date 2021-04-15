@@ -12,7 +12,7 @@
                     <!-- <a href="<?=base_url()?>surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a> -->
                     <br>
                     </p>
-                    <form action="" method="POST">
+                    <!-- <form action="" method="POST">
                         <div class="form-group">
                             <label for="">Filter Status SPT:</label>
                             <select class="form-control" name="id_status" id="id_status" style="min-height: 50px">
@@ -32,7 +32,7 @@
                         <?php if($this->input->post('id_status',true)){?>
                         <a href="<?=base_url()?>surat_tugas" class="btn btn-warning">Reset Filter</a>
                         <?php }?>
-                    </form>
+                    </form> -->
                     <br><br>
                     <table id="dataTable" class="table table-striped">
                         <thead>
@@ -61,6 +61,8 @@
                                     $label = 'success';
                                 }else if($rsurat->id_status == 5){
                                     $label = 'info';
+                                }else if($rsurat->id_status == 6){
+                                    $label = 'success';
                                 }
                             ?>
                             <tr>
