@@ -9,7 +9,7 @@
                     
                     <p>
                     <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <!-- <a href="<?=base_url()?>surat_tugas/tambah_sendiri" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a> -->
+                    <a href="<?=base_url()?>surat_tugas/tambah_sendiri" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas Sendiri</a>
                     <br>
                     </p>
                     <!-- <form action="" method="POST">

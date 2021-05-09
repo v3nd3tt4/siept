@@ -34,7 +34,7 @@
                         <input type="date" name="tanggal_surat" id="tanggal_surat" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="">Tanggal:</label>
+                        <label for="">Tanggal Panggilan:</label>
                         <input type="date" name="tanggal" id="tanggal" class="form-control" required>
                     </div>
                     <div class="form-group">

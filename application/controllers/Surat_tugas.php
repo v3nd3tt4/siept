@@ -183,9 +183,9 @@ class Surat_tugas extends CI_Controller {
         $image_name=date('YmdHis').'.png'; //buat name dari qr code sesuai dengan nim
  
 		$this->load->library('encryption');
-		$nomor_surat = $this->encryption->encrypt($nomor_surat);
+		$nomor_surat2 = $this->encryption->encrypt($nomor_surat);
 
-        $params['data'] = base_url().'lihat_spt/'.$nomor_surat; //data yang akan di jadikan QR CODE
+        $params['data'] = base_url().'lihat_spt/'.$nomor_surat2; //data yang akan di jadikan QR CODE
         $params['level'] = 'H'; //H=High
         $params['size'] = 10;
         $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
@@ -193,28 +193,28 @@ class Surat_tugas extends CI_Controller {
 
 		// echo $nomor_surat;
 		$data_to_save = array(
-			// 'nomor_surat_full' => $nomor_surat,
+			'nomor_surat_full' => $nomor_surat,
 			'id_perkara' => $id_perkara,
 			'nomor_perkara' => $nomor_perkara,
-			// 'id_jurusita' => $id_jurusita,
-			// 'perihal' => $perihal,
-			// 'urutan_nomor_surat' => $nomor_urutan,
-			// 'bulan_nomor_surat' => $bulan,
-			// 'tahun_nomor_surat' => $tahun,
-			// 'tanggal_surat' => $tanggal_surat,
+			'id_jurusita' => $id_jurusita,
+			'perihal' => $perihal,
+			'urutan_nomor_surat' => $nomor_urutan,
+			'bulan_nomor_surat' => $bulan,
+			'tahun_nomor_surat' => $tahun,
+			'tanggal_surat' => $tanggal_surat,
 			'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
-			// 'dasar' => $dasar,
+			'dasar' => $dasar,
 			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
-			// 'qrcode' => $image_name,
-			// 'id_dasar' => $id_dasar,
-			// 'id_perihal' => $id_perihal,
-			'id_status' => 5,
-			// 'id_guna' => $id_guna,
+			'qrcode' => $image_name,
+			'id_dasar' => $id_dasar,
+			'id_perihal' => $id_perihal,
+			'id_status' => 1,
+			'id_guna' => $id_guna,
 			'hari' => $hari,
 			'pukul' => $pukul,
 			'id_acara' => $id_acara,
-			'id_pp' => $this->session->userdata('id_user')
+			// 'id_pp' => $this->session->userdata('id_user')
 
 		);
 		
@@ -225,7 +225,7 @@ class Surat_tugas extends CI_Controller {
 			echo '<script>alert("Berhasil diproses");</script>';
 			// $this->cetak($id_surat);
             // echo '<script>window.location.href = "'.base_url().'surat_tugas/cetak/'.$id_surat.'";</script>';
-			echo '<script>window.location.href = "'.base_url().'pp/surat_tugas";</script>';
+			echo '<script>window.location.href = "'.base_url().'surat_tugas";</script>';
 		}else{
 			echo '<script>alert("Gagal diproses");</script>';
             echo '<script>window.history.back();</script>';
