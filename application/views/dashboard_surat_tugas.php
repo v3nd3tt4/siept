@@ -9,7 +9,7 @@
                     
                     <p>
                     <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <a href="<?=base_url()?>surat_tugas/tambah_sendiri" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas Sendiri</a>
+                    <a href="<?=base_url()?>surat_tugas/tambah_sendiri" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat SPT Sendiri</a>
                     <br>
                     </p>
                     <!-- <form action="" method="POST">
@@ -34,6 +34,7 @@
                         <?php }?>
                     </form> -->
                     <br><br>
+                    <div class="table-responsive">
                     <table id="dataTable" class="table table-striped">
                         <thead>
                             <tr>
@@ -93,11 +94,11 @@
                                         <a href="<?=base_url()?>surat_tugas/teruskan/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs" onclick="return confirm('Apakah anda yakin meneruskan SPT ini ke Panitera?');"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
                                         <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> Lihat SPT</a>
                                     <?php }else if($rsurat->id_status == 4){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>                                    
+                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-light btn-xs"> <i class="fa fa-file-word-o"></i> Lihat SPT</a>                                    
                                     <?php }else if($rsurat->id_status == 5){ ?>
                                         <a href="<?=base_url()?>surat_tugas/tambah/<?=$rsurat->id_surat?>" class="btn btn-info btn-sm"> <i class="fa fa-pencil"></i> Buat Surat Tugas</a>
                                     <?php }else if($rsurat->id_status == 6){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-sm"> <i class="fa fa-download"></i> Download</a>
+                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-xs"> <i class="fa fa-download"></i> Download SPT</a>
                                     <?php }
                                     ?>
                                     
@@ -106,6 +107,7 @@
                             <?php }?>
                         </tbody>
                     </table>
+                    </div>
                     <!-- <div class="d-sm-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Market Value And Trends</h4>
                         <select class="custome-select border-0 pr-3">
