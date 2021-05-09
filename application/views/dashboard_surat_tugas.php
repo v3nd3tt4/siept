@@ -43,6 +43,7 @@
                                 <th>Agenda</th>
                                 <th>Kepada</th>
                                 <th>Status</th>
+                                <th>PP</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -75,6 +76,9 @@
                                     <span class="badge badge-<?=$label?>">
                                     <?=$rsurat->nama_status?>
                                     </span>
+                                </td>
+                                <td>
+                                    <?=$rsurat->nama_user?>
                                 </td>
                                 <td>
                                     <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
