@@ -5,8 +5,31 @@ function cetak_spt($id_surat){
 
     $qu = $ci->db->get_where('db_siept.tb_surat', array('id_surat' => $id_surat));
     $qu = $qu->row();
-
     $nomor_surat = $qu->nomor_surat_full;
+
+    if($qu->jenis_surat_acc == 'custom'){
+        $ttdel = './assets_srtdash/qrcode/'.$qu->qrcode; 
+    
+        include './application/libraries/Image.php';
+        $functions = new Image($ttdel, 150, 150);
+        $ttdarr = array('4', '6');
+        if(in_array($qu->id_status, $ttdarr)){
+            $hex = $functions->getContent();
+        }else{
+            $hex = '';
+        }
+
+        $document = file_get_contents("./upload/".$qu->file_custome);	
+        
+        $document = str_replace("%%ttdel%%", $hex, $document);
+        header("Content-type: application/msword");
+        header("Content-disposition: inline; filename=".$nomor_surat.".rtf");
+        header("Content-length: " . strlen($document));
+        return $document;
+        exit();
+    }
+
+    
     $nomor_perkara = $qu->nomor_perkara;
 
     $perkara_id = $qu->id_perkara;

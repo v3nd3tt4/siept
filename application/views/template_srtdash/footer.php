@@ -292,6 +292,79 @@
                 });
             });
 
+            $(document).on('click', '.btn-teruskan-panitera', function(e){
+                e.preventDefault();
+                $('#modal-teruskan-panitera').modal();
+                var id_surat = $(this).attr('id');
+                $('#id_surat').val(id_surat); 
+            });
+
+            $(document).on('change', '#jenis_spt', function(e){
+                e.preventDefault();
+                var jns = $(this).val();
+                if(jns == 'custom'){
+                    $('.file-spt').show();
+                }else{
+                    $('.file-spt').hide();
+                }                
+            });
+
+            $(document).on('submit', '#form-teruskan-panitera', function(e){
+                e.preventDefault();
+                $('.notif').html('Loading.....');
+                var data = new FormData(document.getElementById('form-teruskan-panitera'));
+                $(':input[type="submit"]').prop('disabled', true);
+                $.ajax({
+                    url : '<?=base_url()?>surat_tugas/teruskan2',
+                    type : 'POST',
+                    data : data,
+                    processData: false, 
+                    contentType: false,
+                    dataType: "JSON",
+                    success : function(msg){
+                        if(msg.status == 'ok'){
+                            $('.notif').html(msg.text);
+                            location.reload();
+                        }else if(msg.status == 'failed'){
+                            $('.notif').html(msg.text);
+                            $(':input[type="submit"]').prop('disabled', false);
+                        }
+                    }
+                });
+            });
+
+            //relaas jurusita
+            $(document).on('click', '.btn-selesai-relaas', function(e){
+                e.preventDefault();
+                $('#modal-selesai-relaas').modal();
+                var id_surat = $(this).attr('id');
+                $('#id_surat').val(id_surat); 
+            });
+
+            $(document).on('submit', '#form-selesai-relaas', function(e){
+                e.preventDefault();
+                $('.notif').html('Loading.....');
+                var data = new FormData(document.getElementById('form-selesai-relaas'));
+                $(':input[type="submit"]').prop('disabled', true);
+                $.ajax({
+                    url : '<?=base_url()?>jurusita/surat_tugas/selesai2',
+                    type : 'POST',
+                    data : data,
+                    processData: false, 
+                    contentType: false,
+                    dataType: "JSON",
+                    success : function(msg){
+                        if(msg.status == 'ok'){
+                            $('.notif').html(msg.text);
+                            location.reload();
+                        }else if(msg.status == 'failed'){
+                            $('.notif').html(msg.text);
+                            $(':input[type="submit"]').prop('disabled', false);
+                        }
+                    }
+                });
+            });
+
             
         });
     </script>

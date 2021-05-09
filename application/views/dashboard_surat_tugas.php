@@ -9,7 +9,7 @@
                     
                     <p>
                     <!-- <button class="btn btn-default"><i class="fa fa-arrow-left"></i> Kembali</button> -->
-                    <!-- <a href="<?=base_url()?>surat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a> -->
+                    <!-- <a href="<?=base_url()?>surat_tugas/tambah_sendiri" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Surat Tugas</a> -->
                     <br>
                     </p>
                     <!-- <form action="" method="POST">
@@ -59,7 +59,7 @@
                                 }else if($rsurat->id_status == 3){
                                     $label = 'danger';
                                 }else if($rsurat->id_status == 4){
-                                    $label = 'success';
+                                    $label = 'dark';
                                 }else if($rsurat->id_status == 5){
                                     $label = 'info';
                                 }else if($rsurat->id_status == 6){
@@ -84,7 +84,8 @@
                                     <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
                                     <?php
                                     if($rsurat->id_status == 1){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/teruskan/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs" onclick="return confirm('Apakah anda yakin meneruskan SPT ini ke Panitera?');"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
+                                        <!-- <a href="<?=base_url()?>surat_tugas/teruskan/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs" onclick="return confirm('Apakah anda yakin meneruskan SPT ini ke Panitera?');"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a> -->
+                                        <a href="#" class="btn btn-secondary btn-xs btn-teruskan-panitera" id="<?=$rsurat->id_surat?>"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
                                         <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> Lihat SPT</a>
                                     <?php }else if($rsurat->id_status == 2){
                                         
@@ -183,6 +184,42 @@
         </div>
     </div>
     <!-- market value area end -->
+
+    <div class="modal" id="modal-teruskan-panitera" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Teruskan Ke Panitera</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="form-teruskan-panitera">
+                <div class="modal-body">
+                    
+                    <div class="form-group">
+                        <input type="hidden" name="id_surat" id="id_surat">
+                        <label for="">Jenis File SPT:</label>
+                        <select name="jenis_spt" class="form-control" id="jenis_spt" required>
+                            <option value="">--pilih--</option>
+                            <option value="sama dengan sistem">Sama Dengan Sistem</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div class="form-group file-spt" style="display:none">
+                        <label for="">File SPT (Rtf): max. 1 Mb</label>
+                        <input type="file" name="file_spt" class="form-control">
+                    </div>
+                    <div class="notif"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
     
     
 </div>

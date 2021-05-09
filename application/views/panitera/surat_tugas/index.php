@@ -6,12 +6,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="table-responsive">
                     <table id="dataTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Nomor Surat</th>
                                 <th>Nomor Perkara</th>
+                                <th>Tanggal Surat</th>
                                 <th>Perihal</th>
                                 <th>Kepada</th>
                                 <th>Status</th>
@@ -38,6 +40,7 @@
                                 <td><?=$no++?>.</td>
                                 <td><?=$rsurat->nomor_surat_full?></td>
                                 <td><?=$rsurat->nomor_perkara?></td>
+                                <td><?=date('d-m-Y', strtotime($rsurat->tanggal_surat))?></td>
                                 <td><?=$rsurat->text?></td>
                                 <td><?=$pihak?></td>
                                 <td>
@@ -67,6 +70,7 @@
                             <?php }?>
                         </tbody>
                     </table>
+                    </div>
                     <!-- <div class="d-sm-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Market Value And Trends</h4>
                         <select class="custome-select border-0 pr-3">

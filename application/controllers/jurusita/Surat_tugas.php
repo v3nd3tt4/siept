@@ -568,4 +568,54 @@ class Surat_tugas extends CI_Controller {
 		}
 	}
 
+	public function selesai2(){
+		
+		if(!empty($_FILES['file_relaas']['tmp_name'])){
+			$config['upload_path']          = './upload/relaas';
+			$config['allowed_types']        = 'pdf|PDF';
+			$config['file_name']            = date('YmdHis');
+			$config['overwrite']			= true;
+			$config['max_size']             = 1024; // 1MB
+			// $config['max_width']            = 1024;
+			// $config['max_height']           = 768;
+
+			$this->load->library('upload', $config);
+
+			if ($this->upload->do_upload('file_relaas')) {
+				$file_custome =  $this->upload->data("file_name");
+				$data_to_save = array(
+					'file_relaas' => $file_custome, 
+					'tanggal_relaas' => $this->input->post('tanggal_relaas', true),
+					'tanggal_selesai' => date('Y-m-d H:i:s'),
+					'id_status' => 6
+				);
+				$simpan = $this->db->update('db_siept.tb_surat', $data_to_save, array('id_surat' => $this->input->post('id_surat', true)));
+				if($simpan){
+					$return = array('status' => 'ok', 'text' => '<div class="alert alert-success" role="alert">Berhasil diteruskan!</div>');
+					echo json_encode($return); exit();
+				}else{
+					$return = array('status' => 'failed', 'text' => '<div class="alert alert-danger" role="alert">Gagal diteruskan!</div>');
+					echo json_encode($return);exit();
+				}
+			}else{
+				$return = array('status' => 'failed', 'text' => '<div class="alert alert-danger" role="alert">'.$this->upload->display_errors().'</div>');
+				echo json_encode($return);exit();			
+			}
+		}else{
+			$data_to_save = array(
+				'tanggal_relaas' => $this->input->post('tanggal_relaas', true),
+				'tanggal_selesai' => date('Y-m-d H:i:s'),
+				'id_status' => 6
+			);
+			$simpan = $this->db->update('db_siept.tb_surat', $data_to_save, array('id_surat' => $this->input->post('id_surat', true)));
+			if($simpan){
+				$return = array('status' => 'ok', 'text' => '<div class="alert alert-success" role="alert">Berhasil diteruskan!</div>');
+				echo json_encode($return); exit();
+			}else{
+				$return = array('status' => 'failed', 'text' => '<div class="alert alert-danger" role="alert">Gagal diteruskan!</div>');
+				echo json_encode($return);exit();
+			}
+		}
+	}
+
 }

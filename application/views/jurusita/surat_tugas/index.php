@@ -11,12 +11,14 @@
                         <!-- <a href="<?=base_url()?>jurusitasurat_tugas/tambah" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Buat Panggilan</a> -->
                     <br><br><br>
                     </p>
+                    <div class="table-responsive">
                     <table id="dataTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <!-- <th>Nomor Surat</th> -->
+                                <th>Nomor Surat</th>
                                 <th>Nomor Perkara</th>
+                                <th>Tanggal Surat</th>
                                 <th>Agenda</th>
                                 <th>Kepada</th>
                                 <th>Status</th>
@@ -45,8 +47,9 @@
                             ?>
                             <tr>
                                 <td><?=$no++?>.</td>
-                                <!-- <td><?=$rsurat->nomor_surat_full?></td> -->
+                                <td><?=$rsurat->nomor_surat_full?></td>
                                 <td><?=$rsurat->nomor_perkara?></td>
+                                <td><?=date('d-m-Y', strtotime($rsurat->tanggal_surat))?></td>
                                 <td><?=$rsurat->text?></td>
                                 <td><?=$pihak?></td>
                                 <td>
@@ -63,7 +66,8 @@
                                         $arr = array(6);
                                         if(!in_array($rsurat->id_status, $arr) ){
                                     ?>
-                                        <a href="<?=base_url()?>jurusita/surat_tugas/selesai/<?=$rsurat->id_surat?>" class="btn btn-warning btn-xs" onclick="return confirm('Apakah anda yakin akan menyelesaikan SPT ini?');"> <i class="fa fa-check"></i> Selesai</a>
+                                        <!-- <a href="<?=base_url()?>jurusita/surat_tugas/selesai/<?=$rsurat->id_surat?>" class="btn btn-warning btn-xs" onclick="return confirm('Apakah anda yakin akan menyelesaikan SPT ini?');"> <i class="fa fa-check"></i> Selesai</a> -->
+                                        <a href="#" class="btn btn-warning btn-xs btn-selesai-relaas" id="<?=$rsurat->id_surat?>"> <i class="fa fa-check"></i> Selesai 2</a>
                                         <!-- <a href="<?=base_url()?>panitera/surat_tugas/tolak/<?=$rsurat->id_surat?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin tidak menyetujui SPT ini?');"> <i class="fa fa-remove"></i> Tidak disetujui</a> -->
                                     <?php
 
@@ -74,6 +78,7 @@
                             <?php }?>
                         </tbody>
                     </table>
+                    </div>
                     <!-- <div class="d-sm-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Market Value And Trends</h4>
                         <select class="custome-select border-0 pr-3">
@@ -152,6 +157,38 @@
         </div>
     </div>
     <!-- market value area end -->
+
+    <div class="modal" id="modal-selesai-relaas" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Selesai Relaas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="form-selesai-relaas">
+                <div class="modal-body">
+                    
+                    <div class="form-group">
+                        <input type="hidden" name="id_surat" id="id_surat">
+                        <label for="">Tanggal Relaas: (wajib diisi)</label>
+                        <input type="date" name="tanggal_relaas" class="form-control" required>
+                    </div>
+                    <div class="form-group file-spt">
+                        <label for="">File Relaas (pdf): max. 1 Mb</label>
+                        <input type="file" name="file_relaas" class="form-control">
+                    </div>
+                    <div class="notif"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
     
     
 </div>

@@ -50,7 +50,7 @@ class Surat_tugas extends CI_Controller {
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
 
-	public function tambah($id_surat)
+	public function tambah($id_surat='')
 	{
 		// var_dump("expression");exit();
 		$js = $this->db->get_where('sipp320.jurusita', array('aktif' => 'Y'));
@@ -80,6 +80,36 @@ class Surat_tugas extends CI_Controller {
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
 
+	public function tambah_sendiri()
+	{
+		// var_dump("expression");exit();
+		$js = $this->db->get_where('sipp320.jurusita', array('aktif' => 'Y'));
+
+		$dasar = $this->db->get('db_siept.tb_dasar');
+		$perihal = $this->db->get('db_siept.tb_perihal');
+		$guna = $this->db->get('db_siept.tb_guna');
+		$acara = $this->db->get('db_siept.tb_acara');
+
+		// $get_surat = $this->db->get_where('db_siept.tb_surat', array('id_surat' => $id_surat));
+
+		// $pihak = $this->db->get_where('sipp320.pihak', array('id' => $get_surat->row()->id_pihak_penerima));
+		// $jurusita = $this->db->get_where('sipp320.perkara_jurusita', array('perkara_id' => $get_surat->row()->id_perkara));
+
+		$data = array(
+			'page' => 'tambah_surat_tugas_sendiri',
+			'js' => $js,
+			'dasar' => $dasar,
+			'perihal' => $perihal,
+			'guna' => $guna,
+			'acara' => $acara,
+			'link' => 'surat_tugas',
+			// 'get_surat' => $get_surat,
+			// 'pihak' => $pihak,
+			// 'jurusita' => $jurusita
+		);
+		$this->load->view('template_srtdash/wrapper', $data);
+	}
+
 	public function get_nomor_perkara(){
 		$nomor_perkara = $this->input->post('search', true);
 		$this->db->from('sipp320.perkara');
@@ -98,6 +128,109 @@ class Surat_tugas extends CI_Controller {
 		}else{
 			echo 'no result';
 		}
+	}
+
+	public function simpan_sendiri(){
+		$id_perkara = $this->input->post('nomor_perkara', true);
+		$id_pihak_penerima = $this->input->post('tujuan', true);
+		$id_jurusita = $this->input->post('jurusita', true);
+		$tanggal_surat = $this->input->post('tanggal_surat', true);
+		$perihal = $this->input->post('perihal', true);
+		$dasar = $this->input->post('dasar', true);
+		$guna = $this->input->post('guna', true);
+
+		$hari = $this->input->post('tanggal', true);
+		$pukul = $this->input->post('pukul', true);
+		$acara = $this->input->post('acara', true);
+
+		$id_dasar = $dasar;
+		$id_perihal = $perihal;
+		$id_guna = $guna;
+		$id_acara = $acara;
+
+
+		$cek = $this->db->get('db_siept.tb_surat');
+		if($cek->num_rows() == 0){
+			$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
+			$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
+		}else{
+			$this->db->from('db_siept.tb_surat');
+			$this->db->order_by('urutan_nomor_surat', 'DESC');
+			$this->db->limit(1);
+			$q = $this->db->get();
+			$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
+		}
+
+		$q = $this->db->get_where('sipp320.perkara', array('perkara_id' => $id_perkara));
+		$nomor_perkara = $q->row()->nomor_perkara;
+
+		$bulan = date('n');
+		$tahun = date('Y');
+		$nomor_surat = 'W15.U8/'.$nomor_urutan.'/SPT/HK.02/'.$bulan.'/'.$tahun;
+
+		$this->load->library('ciqrcode'); //pemanggilan library QR CODE
+ 
+        $config['cacheable']    = true; //boolean, the default is true
+        $config['cachedir']     = './assets_srtdash/'; //string, the default is application/cache/
+        $config['errorlog']     = './assets_srtdash/'; //string, the default is application/logs/
+        $config['imagedir']     = './assets_srtdash/qrcode/'; //direktori penyimpanan qr code
+        $config['quality']      = true; //boolean, the default is true
+        $config['size']         = '1024'; //interger, the default is 1024
+        $config['black']        = array(224,255,255); // array, default is array(255,255,255)
+        $config['white']        = array(70,130,180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+ 
+        $image_name=date('YmdHis').'.png'; //buat name dari qr code sesuai dengan nim
+ 
+		$this->load->library('encryption');
+		$nomor_surat = $this->encryption->encrypt($nomor_surat);
+
+        $params['data'] = base_url().'lihat_spt/'.$nomor_surat; //data yang akan di jadikan QR CODE
+        $params['level'] = 'H'; //H=High
+        $params['size'] = 10;
+        $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
+        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+
+		// echo $nomor_surat;
+		$data_to_save = array(
+			// 'nomor_surat_full' => $nomor_surat,
+			'id_perkara' => $id_perkara,
+			'nomor_perkara' => $nomor_perkara,
+			// 'id_jurusita' => $id_jurusita,
+			// 'perihal' => $perihal,
+			// 'urutan_nomor_surat' => $nomor_urutan,
+			// 'bulan_nomor_surat' => $bulan,
+			// 'tahun_nomor_surat' => $tahun,
+			// 'tanggal_surat' => $tanggal_surat,
+			'id_pihak_penerima' => $id_pihak_penerima,
+			'tanggal_buat' => date('Y-m-d H:i:s'),
+			// 'dasar' => $dasar,
+			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
+			// 'qrcode' => $image_name,
+			// 'id_dasar' => $id_dasar,
+			// 'id_perihal' => $id_perihal,
+			'id_status' => 5,
+			// 'id_guna' => $id_guna,
+			'hari' => $hari,
+			'pukul' => $pukul,
+			'id_acara' => $id_acara,
+			'id_pp' => $this->session->userdata('id_user')
+
+		);
+		
+
+		$simpan = $this->db->insert('db_siept.tb_surat', $data_to_save);
+		$id_surat = $insert_id = $this->db->insert_id();
+		if($simpan){
+			echo '<script>alert("Berhasil diproses");</script>';
+			// $this->cetak($id_surat);
+            // echo '<script>window.location.href = "'.base_url().'surat_tugas/cetak/'.$id_surat.'";</script>';
+			echo '<script>window.location.href = "'.base_url().'pp/surat_tugas";</script>';
+		}else{
+			echo '<script>alert("Gagal diproses");</script>';
+            echo '<script>window.history.back();</script>';
+		}
+		
 	}
 
 	public function get_pihak(){
@@ -575,6 +708,60 @@ class Surat_tugas extends CI_Controller {
 		}else{
 			echo '<script>alert("Gagal disimpan");</script>';
             echo '<script>window.history.back();</script>';
+		}
+	}
+
+	public function teruskan2(){
+		if($this->input->post('jenis_spt', true)=='custom'){
+			if(!empty($_FILES['file_spt']['tmp_name'])){
+				$config['upload_path']          = './upload';
+				$config['allowed_types']        = 'rtf|RTF';
+				$config['file_name']            = date('YmdHis');
+				$config['overwrite']			= true;
+				$config['max_size']             = 1024; // 1MB
+				// $config['max_width']            = 1024;
+				// $config['max_height']           = 768;
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload('file_spt')) {
+					$file_custome =  $this->upload->data("file_name");
+					$data_to_save = array(
+						'jenis_surat_acc' => $this->input->post('jenis_spt', true), 
+						'file_custome' => $file_custome, 
+						'tanggal_teruskan_panitera' => date('Y-m-d'),
+						'id_status' => 2
+					);
+					$simpan = $this->db->update('db_siept.tb_surat', $data_to_save, array('id_surat' => $this->input->post('id_surat', true)));
+					if($simpan){
+						$return = array('status' => 'ok', 'text' => '<div class="alert alert-success" role="alert">Berhasil diteruskan!</div>');
+						echo json_encode($return); exit();
+					}else{
+						$return = array('status' => 'failed', 'text' => '<div class="alert alert-danger" role="alert">Gagal diteruskan!</div>');
+						echo json_encode($return);exit();
+					}
+				}else{
+					$return = array('status' => 'failed', 'text' => '<div class="alert alert-danger" role="alert">'.$this->upload->display_errors().'</div>');
+					echo json_encode($return);exit();			
+				}
+			}else{
+				$return = array('status' => 'failed', 'text' => '<div class="alert alert-danger" role="alert">File SPT harus diisi!</div>');
+				echo json_encode($return);exit();
+			}
+		}else{
+			$data_to_save = array(
+				'jenis_surat_acc' => $this->input->post('jenis_spt', true), 
+				'tanggal_teruskan_panitera' => date('Y-m-d'),
+				'id_status' => 2
+			);
+			$simpan = $this->db->update('db_siept.tb_surat', $data_to_save, array('id_surat' => $this->input->post('id_surat', true)));
+			if($simpan){
+				$return = array('status' => 'ok', 'text' => '<div class="alert alert-success" role="alert">Berhasil diteruskan!</div>');
+				echo json_encode($return); exit();
+			}else{
+				$return = array('status' => 'failed', 'text' => '<div class="alert alert-danger" role="alert">Gagal diteruskan!</div>');
+				echo json_encode($return);exit();
+			}
 		}
 	}
 }
