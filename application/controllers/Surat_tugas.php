@@ -713,7 +713,7 @@ class Surat_tugas extends CI_Controller {
 
 	public function teruskan2(){
 		if($this->input->post('jenis_spt', true)=='custom'){
-			if(!$_FILES['file_spt']['tmp_name']){
+			if($_FILES['file_spt']['tmp_name']){
 				$config['upload_path']          = './upload';
 				$config['allowed_types']        = 'rtf|RTF';
 				$config['file_name']            = date('YmdHis');
