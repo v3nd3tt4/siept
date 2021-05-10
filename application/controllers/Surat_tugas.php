@@ -205,7 +205,7 @@ class Surat_tugas extends CI_Controller {
 			'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
 			'dasar' => $dasar,
-			'pembuat' => $this->session->userdata('username') ? 'vendetta' : $this->session->userdata('username'),
+			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
 			'qrcode' => $image_name,
 			'id_dasar' => $id_dasar,
 			'id_perihal' => $id_perihal,
@@ -347,7 +347,7 @@ class Surat_tugas extends CI_Controller {
 			// 'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
 			// 'dasar' => $dasar,
-			'pembuat' => $this->session->userdata('username') ? 'vendetta' : $this->session->userdata('username'),
+			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
 			'qrcode' => $image_name,
 			'id_dasar' => $id_dasar,
 			'id_perihal' => $id_perihal,
@@ -713,7 +713,7 @@ class Surat_tugas extends CI_Controller {
 
 	public function teruskan2(){
 		if($this->input->post('jenis_spt', true)=='custom'){
-			if($_FILES['file_spt']['tmp_name']){
+			if(!empty($_FILES['file_spt']['tmp_name'])){
 				$config['upload_path']          = './upload';
 				$config['allowed_types']        = 'rtf|RTF';
 				$config['file_name']            = date('YmdHis');
