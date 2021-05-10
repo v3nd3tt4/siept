@@ -205,7 +205,7 @@ class Surat_tugas extends CI_Controller {
 			'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
 			'dasar' => $dasar,
-			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
+			'pembuat' => empty($this->session->userdata('username')) === TRUE ? 'vendetta' : $this->session->userdata('username'),
 			'qrcode' => $image_name,
 			'id_dasar' => $id_dasar,
 			'id_perihal' => $id_perihal,
