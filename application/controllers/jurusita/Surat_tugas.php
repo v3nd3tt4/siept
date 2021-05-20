@@ -194,7 +194,7 @@ class Surat_tugas extends CI_Controller {
 			'id_pihak_penerima' => $id_pihak_penerima,
 			'tanggal_buat' => date('Y-m-d H:i:s'),
 			// 'dasar' => $dasar,
-			'pembuat' => empty($this->session->userdata('username')) ? 'vendetta' : $this->session->userdata('username'),
+			'pembuat' => $this->session->userdata('username') == '' ? 'vendetta' : $this->session->userdata('username'),
 			// 'qrcode' => $image_name,
 			// 'id_dasar' => $id_dasar,
 			// 'id_perihal' => $id_perihal,
@@ -570,7 +570,7 @@ class Surat_tugas extends CI_Controller {
 
 	public function selesai2(){
 		
-		if(!empty($_FILES['file_relaas']['tmp_name'])){
+		if($_FILES['file_relaas']['tmp_name'] != ''){
 			$config['upload_path']          = './upload/relaas';
 			$config['allowed_types']        = 'pdf|PDF';
 			$config['file_name']            = date('YmdHis');
