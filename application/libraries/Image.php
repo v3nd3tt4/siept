@@ -24,7 +24,7 @@ class image
     {	
         if ($this->_width != '') {
             $width = $this->_width;
-        } else if ($this->_height !=) {
+        } else if ($this->_height != '') {
             $width = ($this->_defaultWidth / $this->_defaultHeight) * $this->_height;
         } else {
             $width = $this->_defaultWidth * $this->_cmInPoints;
