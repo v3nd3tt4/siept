@@ -82,6 +82,10 @@
                             <?php }?>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="">Keterangan (jika ada):</label>
+                        <textarea name="keterangan" id="" class="form-control"></textarea>
+                    </div>
                     
                     <button type="submit" class="btn btn-success pull-right"><i class="fa fa-refresh"></i> Proses</button>
                     </form>

@@ -139,6 +139,8 @@ class Surat_tugas extends CI_Controller {
 		$dasar = $this->input->post('dasar', true);
 		$guna = $this->input->post('guna', true);
 
+		$keterangan = $this->input->post('keterangan', true);
+
 		$hari = $this->input->post('tanggal', true);
 		$pukul = $this->input->post('pukul', true);
 		$acara = $this->input->post('acara', true);
@@ -214,6 +216,7 @@ class Surat_tugas extends CI_Controller {
 			'hari' => $hari,
 			'pukul' => $pukul,
 			'id_acara' => $id_acara,
+			'keterangan' => $keterangan
 			// 'id_pp' => $this->session->userdata('id_user')
 
 		);
