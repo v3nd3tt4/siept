@@ -15,7 +15,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Penerima Pemberitahuan:</label>
+                        <label for="">Penerima Panggilan/Pemberitahuan:</label>
                         <select name="tujuan" id="tujuan" class="form-control" required>
                             <option value="">--pilih--</option>
                         </select>
@@ -74,7 +74,7 @@
                         </select>
                     </div> -->
                     <div class="form-group">
-                        <label for="">Acara:</label>
+                        <label for="">Agenda Persidangan/Pemberitahuan Putusan:</label>
                         <select name="acara" id="acara" class="form-control select2" style="min-height:50px" required>
                             <option value="">--pilih--</option>
                             <?php foreach($acara->result() as $racara){?>

@@ -15,7 +15,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Penerima Pemberitahuan:</label>
+                        <label for="">Penerima Panggilan/Pemberitahuan:</label>
                         <select name="tujuan" id="tujuan" class="form-control" required>
                             <option value="">--pilih--</option>
                         </select>
@@ -47,7 +47,7 @@
                         <input type="text" class="form-control" name="nomor_surat">
                     </div> -->
                     <div class="form-group">
-                        <label for="">Dasar:</label>
+                        <label for="">Dasar Hukum Pemanggilan/Pemberitahuan:</label>
                         <select name="dasar" id="dasar" class="form-control select2" style="min-height:50px"  required>
                             <option value="">--pilih--</option>
                             <?php foreach($dasar->result() as $rdasar){?>
@@ -56,7 +56,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Perihal:</label>
+                        <label for="">Hal:</label>
                         <select name="perihal" id="perihal" class="form-control select2" style="min-height:50px" required>
                             <option value="">--pilih--</option>
                             <?php foreach($perihal->result() as $rperihal){?>
@@ -65,7 +65,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Guna:</label>
+                        <label for="">Tujuan Panggilan/Pemberitahuan:</label>
                         <select name="guna" id="guna" class="form-control select2" style="min-height:50px" required>
                             <option value="">--pilih--</option>
                             <?php foreach($guna->result() as $rguna){?>
@@ -74,7 +74,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="">Acara:</label>
+                        <label for="">Agenda Persidangan/Pemberitahuan Putusan:</label>
                         <select name="acara" id="acara" class="form-control select2" style="min-height:50px" required>
                             <option value="">--pilih--</option>
                             <?php foreach($acara->result() as $racara){?>
