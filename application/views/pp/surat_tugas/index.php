@@ -36,9 +36,11 @@
                                 }else if($rsurat->id_status == 3){
                                     $label = 'danger';
                                 }else if($rsurat->id_status == 4){
-                                    $label = 'success';
+                                    $label = 'dark';
                                 }else if($rsurat->id_status == 5){
                                     $label = 'info';
+                                }else if($rsurat->id_status == 6){
+                                    $label = 'success';
                                 }
                             ?>
                             <tr>

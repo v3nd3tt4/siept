@@ -45,6 +45,7 @@
                                 <th>Kepada</th>
                                 <th>Status</th>
                                 <th>PP</th>
+                                <th>Keterangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -80,6 +81,9 @@
                                 </td>
                                 <td>
                                     <?=$rsurat->nama_user?>
+                                </td>
+                                <td>
+                                    <?=$rsurat->keterangan != '' ? $rsurat->keterangan : 'Tidak ada'?>
                                 </td>
                                 <td>
                                     <!-- <button class="btn btn-warning btn-sm">Detail</button> -->
