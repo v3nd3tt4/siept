@@ -22,9 +22,9 @@ class image
     
     private function _getWidth()
     {	
-        if ($this->_width != '') {
+        if (!empty($this->_width)) {
             $width = $this->_width;
-        } else if ($this->_height !=) {
+        } else if (!empty($this->_height)) {
             $width = ($this->_defaultWidth / $this->_defaultHeight) * $this->_height;
         } else {
             $width = $this->_defaultWidth * $this->_cmInPoints;
@@ -34,9 +34,9 @@ class image
     
     private function _getHeight()
     {	
-        if ($this->_height != '') {
+        if (!empty($this->_height)) {
             $height = $this->_height;
-        } else if ($this->_height != '') {
+        } else if (!empty($this->_height)) {
             $height = ($this->_defaultHeight / $this->_defaultWidth) * $this->_width; 
         } else {
             $height = $this->_defaultHeight * $this->_cmInPoints;
