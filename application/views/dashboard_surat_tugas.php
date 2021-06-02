@@ -98,11 +98,12 @@
                                         <a href="<?=base_url()?>surat_tugas/teruskan/<?=$rsurat->id_surat?>" class="btn btn-secondary btn-xs" onclick="return confirm('Apakah anda yakin meneruskan SPT ini ke Panitera?');"> <i class="fa fa-mail-forward"></i> Teruskan Ke Panitera</a>
                                         <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" > <i class="fa fa-file-word-o"></i> Lihat SPT</a>
                                     <?php }else if($rsurat->id_status == 4){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-light btn-xs"> <i class="fa fa-file-word-o"></i> Lihat SPT</a>                                    
+                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-light btn-sm"> <i class="fa fa-file-word-o"></i> Lihat SPT</a>                                    
                                     <?php }else if($rsurat->id_status == 5){ ?>
                                         <a href="<?=base_url()?>surat_tugas/tambah/<?=$rsurat->id_surat?>" class="btn btn-info btn-sm"> <i class="fa fa-pencil"></i> Buat Surat Tugas</a>
                                     <?php }else if($rsurat->id_status == 6){ ?>
-                                        <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-xs"> <i class="fa fa-download"></i> Download SPT</a>
+                                        <!-- <a href="<?=base_url()?>surat_tugas/cetak/<?=$rsurat->id_surat?>" class="btn btn-success btn-xs"> <i class="fa fa-download"></i> Download SPT</a> -->
+                                        <a href="<?=base_url()?>upload/relaas/<?=$rsurat->file_relaas?>" class="btn btn-danger btn-sm"> <i class="fa fa-download"></i> Lihat Relaas</a>
                                     <?php }
                                     ?>
                                     

@@ -67,7 +67,7 @@
                                         if(!in_array($rsurat->id_status, $arr) ){
                                     ?>
                                         <!-- <a href="<?=base_url()?>jurusita/surat_tugas/selesai/<?=$rsurat->id_surat?>" class="btn btn-warning btn-xs" onclick="return confirm('Apakah anda yakin akan menyelesaikan SPT ini?');"> <i class="fa fa-check"></i> Selesai</a> -->
-                                        <a href="#" class="btn btn-warning btn-xs btn-selesai-relaas" id="<?=$rsurat->id_surat?>"> <i class="fa fa-check"></i> Selesai 2</a>
+                                        <a href="#" class="btn btn-warning btn-xs btn-selesai-relaas" id="<?=$rsurat->id_surat?>"> <i class="fa fa-check"></i> Upload Relaas</a>
                                         <!-- <a href="<?=base_url()?>panitera/surat_tugas/tolak/<?=$rsurat->id_surat?>" class="btn btn-danger btn-xs" onclick="return confirm('Apakah anda yakin tidak menyetujui SPT ini?');"> <i class="fa fa-remove"></i> Tidak disetujui</a> -->
                                     <?php
 
