@@ -365,6 +365,18 @@
                 });
             });
 
+            $(document).on('change', '#kat_no_surat', function(e){
+                e.preventDefault();
+                var kat = $(this).val();
+                if(kat == 'otomatis'){
+                    // $('#nomor_surat').attr('readonly', true);
+                    location.reload();
+                }else if(kat == 'manual'){
+                    $('#nomor_surat').attr('readonly', false);
+                }
+                
+            });
+
             
         });
     </script>

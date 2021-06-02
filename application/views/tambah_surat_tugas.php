@@ -56,6 +56,14 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="">Nomor Surat:</label>
+                        <select name="kat_no_surat" id="kat_no_surat" style="min-height: 15px">
+                            <option value="otomatis">otomatis</option>
+                            <option value="manual">manual</option>
+                        </select>
+                        <input type="text" name="nomor_surat" id="nomor_surat" class="form-control" value="<?=$no_sur?>" readonly required>
+                    </div>
+                    <div class="form-group">
                         <label for="">Tanggal Surat:</label>
                         <input type="date" name="tanggal_surat" id="tanggal_surat" class="form-control" required>
                     </div>

@@ -65,6 +65,17 @@ class Surat_tugas extends CI_Controller {
 		$pihak = $this->db->get_where('sipp320.pihak', array('id' => $get_surat->row()->id_pihak_penerima));
 		$jurusita = $this->db->get_where('sipp320.perkara_jurusita', array('perkara_id' => $get_surat->row()->id_perkara));
 
+		$this->db->select('db_siept.tb_surat.urutan_nomor_surat');
+		$this->db->from('db_siept.tb_surat');
+		$this->db->order_by('urutan_nomor_surat', 'Desc');
+		$this->db->limit(1);
+		$get_no_surat_terakhir = $this->db->get();
+		if($get_no_surat_terakhir->num_rows() == 0){
+			$no_sur = 1;
+		}else{
+			$no_sur = $get_no_surat_terakhir->row()->urutan_nomor_surat + 1;
+		}
+
 		$data = array(
 			'page' => 'tambah_surat_tugas',
 			'js' => $js,
@@ -75,7 +86,8 @@ class Surat_tugas extends CI_Controller {
 			'link' => 'surat_tugas',
 			'get_surat' => $get_surat,
 			'pihak' => $pihak,
-			'jurusita' => $jurusita
+			'jurusita' => $jurusita,
+			'no_sur' => $no_sur
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
@@ -95,6 +107,17 @@ class Surat_tugas extends CI_Controller {
 		// $pihak = $this->db->get_where('sipp320.pihak', array('id' => $get_surat->row()->id_pihak_penerima));
 		// $jurusita = $this->db->get_where('sipp320.perkara_jurusita', array('perkara_id' => $get_surat->row()->id_perkara));
 
+		$this->db->select('db_siept.tb_surat.urutan_nomor_surat');
+		$this->db->from('db_siept.tb_surat');
+		$this->db->order_by('urutan_nomor_surat', 'Desc');
+		$this->db->limit(1);
+		$get_no_surat_terakhir = $this->db->get();
+		if($get_no_surat_terakhir->num_rows() == 0){
+			$no_sur = 1;
+		}else{
+			$no_sur = $get_no_surat_terakhir->row()->urutan_nomor_surat + 1;
+		}
+
 		$data = array(
 			'page' => 'tambah_surat_tugas_sendiri',
 			'js' => $js,
@@ -103,6 +126,7 @@ class Surat_tugas extends CI_Controller {
 			'guna' => $guna,
 			'acara' => $acara,
 			'link' => 'surat_tugas',
+			'no_sur' => $no_sur
 			// 'get_surat' => $get_surat,
 			// 'pihak' => $pihak,
 			// 'jurusita' => $jurusita
@@ -151,17 +175,18 @@ class Surat_tugas extends CI_Controller {
 		$id_acara = $acara;
 
 
-		$cek = $this->db->get('db_siept.tb_surat');
-		if($cek->num_rows() == 0){
-			$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
-			$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
-		}else{
-			$this->db->from('db_siept.tb_surat');
-			$this->db->order_by('urutan_nomor_surat', 'DESC');
-			$this->db->limit(1);
-			$q = $this->db->get();
-			$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
-		}
+		// $cek = $this->db->get('db_siept.tb_surat');
+		// if($cek->num_rows() == 0){
+		// 	$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
+		// 	$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
+		// }else{
+		// 	$this->db->from('db_siept.tb_surat');
+		// 	$this->db->order_by('urutan_nomor_surat', 'DESC');
+		// 	$this->db->limit(1);
+		// 	$q = $this->db->get();
+		// 	$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
+		// }
+		$nomor_urutan = $this->input->post('nomor_surat', true);
 
 		$q = $this->db->get_where('sipp320.perkara', array('perkara_id' => $id_perkara));
 		$nomor_perkara = $q->row()->nomor_perkara;
@@ -287,24 +312,24 @@ class Surat_tugas extends CI_Controller {
 		$id_guna = $guna;
 		$id_acara = $acara;
 
-
 		$cek = $this->db->get('db_siept.tb_surat');
 		$cek_tb_no_terakhir = $this->db->get_where('db_siept.tb_no_surat_terakhir', array('status' => 'ya'));
 
-		if($cek_tb_no_terakhir->num_rows() > 0){
-			$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
-			$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
-		}else{
-			if($cek->num_rows() == 0){
-				$nomor_urutan = 1;
-			}else{
-				$this->db->from('db_siept.tb_surat');
-				$this->db->order_by('urutan_nomor_surat', 'DESC');
-				$this->db->limit(1);
-				$q = $this->db->get();
-				$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
-			}
-		}
+		// if($cek_tb_no_terakhir->num_rows() > 0){
+		// 	$cek_tb_no_terakhir = $this->db->get('db_siept.tb_no_surat_terakhir');
+		// 	$nomor_urutan = $cek_tb_no_terakhir->row()->nomor_terakhir+1;
+		// }else{
+		// 	if($cek->num_rows() == 0){
+		// 		$nomor_urutan = 1;
+		// 	}else{
+		// 		$this->db->from('db_siept.tb_surat');
+		// 		$this->db->order_by('urutan_nomor_surat', 'DESC');
+		// 		$this->db->limit(1);
+		// 		$q = $this->db->get();
+		// 		$nomor_urutan = $q->row()->urutan_nomor_surat + 1;
+		// 	}
+		// }
+		$nomor_urutan = $this->input->post('nomor_surat', true);
 
 		$q = $this->db->get_where('sipp320.perkara', array('perkara_id' => $id_perkara));
 		$nomor_perkara = @$q->row()->nomor_perkara;

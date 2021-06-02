@@ -4,7 +4,7 @@
             <div class="logo">
                 <!-- <a href="index.html"><img src="<?=base_url()?>assets_srtdash/images/icon/logo.png" alt="logo"></a> -->
                 <h3 style="color:#fff">SIE PT</h3>
-                <p style="color: #fff">Pengadilan Negeri Rantau</p>
+                <p style="color: #fff">Sistem Informasi Elektronik <br/> Perintah Tugas <br/>Pengadilan Negeri Rantau</p>
             </div>
         </div>
         <div class="main-menu">

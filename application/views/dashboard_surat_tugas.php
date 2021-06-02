@@ -70,7 +70,7 @@
                             ?>
                             <tr>
                                 <td><?=$no++?>.</td>
-                                <td><?=$rsurat->nomor_surat_full?></td>
+                                <td data-sort="<?=$rsurat->urutan_nomor_surat?>"><?=$rsurat->nomor_surat_full?></td>
                                 <td><?=$rsurat->nomor_perkara?></td>
                                 <td><?=$rsurat->text?></td>
                                 <td><?=$pihak?></td>
