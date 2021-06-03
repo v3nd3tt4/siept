@@ -51,6 +51,11 @@ class Login extends CI_Controller
     }
 
     public function logout(){
+        session_unset();
+        session_destroy();
+        session_write_close();
+        setcookie(session_name(),'',0,'/');
+        session_regenerate_id(true);
         $this->session->sess_destroy();
         echo '<script>alert("Berhasil Keluar");</script>';
         echo '<script>window.location.href = "'.base_url().'";</script>';
