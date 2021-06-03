@@ -1,5 +1,7 @@
 <?php
+var_dump($_SESSION);exit();
 session_start();
+var_dump($_SESSION);
 /**
  * CodeIgniter
  *
